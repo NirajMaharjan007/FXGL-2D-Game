@@ -27,14 +27,15 @@ repositories {
 
 dependencies {
     implementation 'com.github.almasb:fxgl:21.1'
+    implementation 'org.junit.jupiter:junit-jupiter-api:5.9.1'
 }
 
 testing {
     suites {
         // Configure the built-in test suite
         test {
-            // Use JUnit4 test framework
-            useJUnit('4.13.2')
+            // Use JUnit Jupiter test framework
+            useJUnitJupiter('5.9.1')
         }
     }
 }
@@ -91,3 +92,10 @@ application {
     mainClass = 'project.core.App'
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/main/java", 'src/main/resources']
+        }
+    }
+}
