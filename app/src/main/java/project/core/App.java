@@ -6,19 +6,22 @@ package project.core;
 import com.almasb.fxgl.app.*;
 import com.almasb.fxgl.entity.Entity;
 import javafx.scene.paint.Color;
+import project.entities.Player;
 import project.misc.Factory;
 
-import static com.almasb.fxgl.dsl.FXGL.getGameScene;
-import static com.almasb.fxgl.dsl.FXGL.getGameWorld;
+import static com.almasb.fxgl.dsl.FXGL.*;
 
 
 public class App extends GameApplication {
+    private Player player;
+
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     protected void initSettings(GameSettings settings) {
+        settings.setApplicationMode(ApplicationMode.DEVELOPER);
         settings.setWidth(800);
         settings.setHeight(600);
         settings.setTitle("Basic Game");
@@ -27,8 +30,16 @@ public class App extends GameApplication {
 
     @Override
     protected void initGame() {
-        getGameScene().setBackgroundColor(Color.BLACK);
         getGameWorld().addEntityFactory(new Factory());
-        Entity player = getGameWorld().spawn("Player", 180, 180);
+        getGameScene().setBackgroundColor(Color.BLACK);
+
+        Entity player_entity = getGameWorld().spawn("player", 128, 200);
+        player = player_entity.getComponent(Player.class);
+    }
+
+    @Override
+    protected void initPhysics() {
+        super.initPhysics();
+        getPhysicsWorld().setGravity(0, 0);
     }
 }

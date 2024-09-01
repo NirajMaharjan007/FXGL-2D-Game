@@ -1,21 +1,25 @@
 package project.misc;
 
 import com.almasb.fxgl.entity.*;
-import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.*;
-import javafx.geometry.Point2D;
+import com.almasb.fxgl.physics.box2d.dynamics.*;
 import project.entities.Player;
 
 import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
 
 public class Factory implements EntityFactory {
-    @Spawns("Player")
+    @Spawns("player")
     public Entity newPlayer(SpawnData data) {
-        return entityBuilder()
+        PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.DYNAMIC);
+        physics.setFixtureDef(new FixtureDef().friction(0.0f));
+
+
+        return entityBuilder(data)
                 .type(EntityType.PLAYER)
-                .from(data)
-                .bbox(new HitBox(new Point2D(10, 25), BoundingShape.box(10, 17)))
-                .with(new CollidableComponent(true))
+                .with(physics)
+                .bbox(new HitBox(BoundingShape.box(10, 16)))
+                .collidable()
                 .with(new Player())
                 .build();
     }
