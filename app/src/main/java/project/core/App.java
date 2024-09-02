@@ -9,7 +9,7 @@ import com.almasb.fxgl.input.UserAction;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import project.entities.Player;
-import project.misc.Factory;
+import project.misc.*;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 
@@ -17,16 +17,26 @@ public class App extends GameApplication {
     private Player player;
 
     public static void main(String[] args) {
-        launch(args);
+        try {
+            launch(args);
+        } catch (Exception e) {
+            embeddedShutdown();
+        }
     }
 
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setApplicationMode(ApplicationMode.DEVELOPER);
         settings.setWidth(800);
-        settings.setHeight(600);
+        settings.setHeight(640);
         settings.setTitle("Basic Game");
         settings.setVersion("0.0.1");
+    }
+
+    @Override
+    protected void onPreInit() {
+        super.onPreInit();
+
     }
 
     @Override
@@ -34,10 +44,14 @@ public class App extends GameApplication {
         getGameWorld().addEntityFactory(new Factory());
         getGameScene().setBackgroundColor(Color.BLACK);
 
+        setLevelFromMap("tmx/Level_1.tmx");
+
+
         Entity player_entity = getGameWorld().spawn("player", 128, 200);
         player = player_entity.getComponent(Player.class);
 
     }
+
 
     @Override
     protected void initInput() {
@@ -96,6 +110,14 @@ public class App extends GameApplication {
     @Override
     protected void initPhysics() {
         super.initPhysics();
+        Entity walls = entityBuilder()
+                .type(EntityType.WALL)
+                .collidable()
+                .buildScreenBounds(64);
+
         getPhysicsWorld().setGravity(0, 0);
+        getGameWorld().addEntity(walls);
     }
+
+
 }
