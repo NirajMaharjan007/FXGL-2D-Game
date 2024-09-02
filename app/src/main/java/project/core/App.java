@@ -5,12 +5,13 @@ package project.core;
 
 import com.almasb.fxgl.app.*;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.input.UserAction;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import project.entities.Player;
 import project.misc.Factory;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
-
 
 public class App extends GameApplication {
     private Player player;
@@ -35,6 +36,61 @@ public class App extends GameApplication {
 
         Entity player_entity = getGameWorld().spawn("player", 128, 200);
         player = player_entity.getComponent(Player.class);
+
+    }
+
+    @Override
+    protected void initInput() {
+        super.initInput();
+
+        getInput().addAction(new UserAction("Up") {
+            @Override
+            protected void onAction() {
+                player.up();
+            }
+
+            @Override
+            protected void onActionEnd() {
+                player.stop();
+            }
+        }, KeyCode.UP);
+
+        getInput().addAction(new UserAction("Down") {
+            @Override
+            protected void onAction() {
+                player.down();
+            }
+
+            @Override
+            protected void onActionEnd() {
+                player.stop();
+            }
+        }, KeyCode.DOWN);
+
+        getInput().addAction(new UserAction("Left") {
+            @Override
+            protected void onAction() {
+                player.left();
+            }
+
+            @Override
+            protected void onActionEnd() {
+                player.stop();
+            }
+        }, KeyCode.LEFT);
+
+        getInput().addAction(new UserAction("Right") {
+            @Override
+            protected void onAction() {
+                player.right();
+            }
+
+            @Override
+            protected void onActionEnd() {
+                player.stop();
+            }
+        }, KeyCode.RIGHT);
+
     }
 
     @Override
