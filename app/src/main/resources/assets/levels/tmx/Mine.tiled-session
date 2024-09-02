@@ -1,0 +1,77 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "Level_1.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "Level_1.tmx": {
+            "scale": 1.2623125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 399.6633163341091,
+                "y": 320.04753181165523
+            }
+        },
+        "Level_1.tmx#grass": {
+            "scaleInDock": 1
+        },
+        "Lvl1.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "grass.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "level5.tmx": {
+            "scale": 0.48088095238095235,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1049.1162053770365,
+                "y": 349.358815665693
+            }
+        },
+        "level5.tmx#tiles_spritesheet": {
+            "scaleInDock": 1
+        },
+        "lvlone.tmx": {
+            "scale": 1.6513671875,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 255.8486102897694,
+                "y": 256.15138971023066
+            }
+        }
+    },
+    "last.imagePath": "E:/My Test/Gradle-Test/platformer-javafx/app/src/main/resources/assets/levels/tmx",
+    "map.height": 40,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 50,
+    "openFiles": [
+        "Level_1.tmx"
+    ],
+    "project": "Mine.tiled-project",
+    "recentFiles": [
+        "Level_1.tmx",
+        "grass.tsx",
+        "level5.tmx",
+        "lvlone.tmx",
+        "Lvl1.tsx"
+    ],
+    "tileset.embedInMap": true,
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
