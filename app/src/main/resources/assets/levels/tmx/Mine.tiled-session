@@ -14,13 +14,16 @@
         },
         "Level_1.tmx": {
             "scale": 1.2623125,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
                 "x": 399.6633163341091,
                 "y": 320.04753181165523
             }
         },
         "Level_1.tmx#grass": {
+            "scaleInDock": 1
+        },
+        "Level_1.tmx#wall": {
             "scaleInDock": 1
         },
         "Lvl1.tsx": {
