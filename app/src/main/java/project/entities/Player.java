@@ -1,7 +1,5 @@
 package project.entities;
 
-import static com.almasb.fxgl.dsl.FXGL.texture;
-
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.*;
@@ -13,12 +11,19 @@ public class Player extends Component {
     public static final int width = 64, height = 64, speed = 128;
 
     private final AnimatedTexture texture;
-    private final AnimationChannel animIdleUp, animIdleLeft, animIdleRight, animIdleDown,
-            animWalkDown, animWalkUp, animWalkLeft, animWalkRight,
-            animAttackUp, animAttackDown, animAttackLeft, animAttackRight;
+
+    // idle
+    private final AnimationChannel animIdleUp, animIdleLeft, animIdleRight, animIdleDown;
+    //walk
+    private final AnimationChannel animWalkDown, animWalkUp, animWalkLeft, animWalkRight;
+    //attack
+    private final AnimationChannel animAttackUp, animAttackDown, animAttackLeft, animAttackRight;
+    //run
+    private final AnimationChannel animRunUp, animRunDown, animRunLeft, animRunRight;
+
     private PhysicsComponent physics;
 
-    private boolean up = true, down = false, left = false, right = false, attack = false;
+    private boolean up = true, down = false, left = false, right = false, attack = false, run = false;
 
     public Player() {
         super();
@@ -26,6 +31,7 @@ public class Player extends Component {
         Image idle_image = new Image("assets/textures/player/player_idle.png");
         Image walk_image = new Image("assets/textures/player/player_walk.png");
         Image attack_image = new Image("assets/textures/player/player_attack.png");
+        Image run_image = new Image("assets/textures/player/player_run.png");
 
         // Idle
         animIdleUp = new AnimationChannel(idle_image,
@@ -57,6 +63,16 @@ public class Player extends Component {
         animAttackRight = new AnimationChannel(attack_image, 8, width, height,
                 Duration.seconds(0.54), 24, 31);
 
+        // Run
+        animRunUp = new AnimationChannel(run_image, 8, width, height,
+                Duration.seconds(0.8), 8, 15);
+        animRunDown = new AnimationChannel(run_image, 8, width, height,
+                Duration.seconds(0.8), 0, 7);
+        animRunLeft = new AnimationChannel(run_image, 8, width, height,
+                Duration.seconds(0.8), 16, 23);
+        animRunRight = new AnimationChannel(run_image, 8, width, height,
+                Duration.seconds(0.8), 24, 31);
+
         texture = new AnimatedTexture(animIdleUp);
         texture.loop();
     }
@@ -75,18 +91,26 @@ public class Player extends Component {
     public void onUpdate(double tpf) {
         super.onUpdate(tpf);
 
-        // System.out.println("Player.onUpdate " + left + " " + right + " " + up + " " +
-        // down);
-
         if (physics.isMoving()) {
-            if (left && texture.getAnimationChannel() != animWalkLeft)
-                texture.loopAnimationChannel(animWalkLeft);
-            else if (right && texture.getAnimationChannel() != animWalkRight)
-                texture.loopAnimationChannel(animWalkRight);
-            else if (up && texture.getAnimationChannel() != animWalkUp)
-                texture.loopAnimationChannel(animWalkUp);
-            else if (down && texture.getAnimationChannel() != animWalkDown)
-                texture.loopAnimationChannel(animWalkDown);
+            if (run) {
+                if (left && texture.getAnimationChannel() != animRunLeft)
+                    texture.loopAnimationChannel(animRunLeft);
+                else if (right && texture.getAnimationChannel() != animRunRight)
+                    texture.loopAnimationChannel(animRunRight);
+                else if (up && texture.getAnimationChannel() != animRunUp)
+                    texture.loopAnimationChannel(animRunUp);
+                else if (down && texture.getAnimationChannel() != animRunDown)
+                    texture.loopAnimationChannel(animRunDown);
+            } else {
+                if (left && texture.getAnimationChannel() != animWalkLeft)
+                    texture.loopAnimationChannel(animWalkLeft);
+                else if (right && texture.getAnimationChannel() != animWalkRight)
+                    texture.loopAnimationChannel(animWalkRight);
+                else if (up && texture.getAnimationChannel() != animWalkUp)
+                    texture.loopAnimationChannel(animWalkUp);
+                else if (down && texture.getAnimationChannel() != animWalkDown)
+                    texture.loopAnimationChannel(animWalkDown);
+            }
         } else if (attack) {
             texture.setOnCycleFinished(() -> attack = false);
 
@@ -115,28 +139,36 @@ public class Player extends Component {
         this.attack = attack;
     }
 
+    public void setRun(boolean run) {
+        this.run = run;
+    }
+
     public void left() {
         left = true;
         right = up = down = false;
-        physics.setLinearVelocity(-speed, 0);
+        if (run) physics.setLinearVelocity(-speed * 3, 0);
+        else physics.setLinearVelocity(-speed, 0);
     }
 
     public void right() {
         right = true;
         left = up = down = false;
-        physics.setLinearVelocity(speed, 0);
+        if (run) physics.setLinearVelocity(speed * 3, 0);
+        else physics.setLinearVelocity(speed, 0);
     }
 
     public void up() {
         up = true;
         right = left = down = false;
-        physics.setLinearVelocity(0, -speed);
+        if (run) physics.setLinearVelocity(0, -speed * 3);
+        else physics.setLinearVelocity(0, -speed);
     }
 
     public void down() {
         down = true;
         right = left = up = false;
-        physics.setLinearVelocity(0, speed);
+        if (run) physics.setLinearVelocity(0, speed * 3);
+        else physics.setLinearVelocity(0, speed);
     }
 
     public void stop() {

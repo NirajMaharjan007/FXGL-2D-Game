@@ -107,6 +107,17 @@ public class App extends GameApplication {
             }
         }, KeyCode.SPACE);
 
+        getInput().addAction(new UserAction("Run") {
+            @Override
+            protected void onAction() {
+                player.setRun(true);
+            }
+
+            @Override
+            protected void onActionEnd() {
+                player.setRun(false);
+            }
+        }, KeyCode.X);
     }
 
     @Override
