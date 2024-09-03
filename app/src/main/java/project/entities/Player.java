@@ -65,13 +65,13 @@ public class Player extends Component {
 
         // Run
         animRunUp = new AnimationChannel(run_image, 8, width, height,
-                Duration.seconds(0.8), 8, 15);
+                Duration.seconds(0.84), 8, 15);
         animRunDown = new AnimationChannel(run_image, 8, width, height,
-                Duration.seconds(0.8), 0, 7);
+                Duration.seconds(0.84), 0, 7);
         animRunLeft = new AnimationChannel(run_image, 8, width, height,
-                Duration.seconds(0.8), 16, 23);
+                Duration.seconds(0.84), 16, 23);
         animRunRight = new AnimationChannel(run_image, 8, width, height,
-                Duration.seconds(0.8), 24, 31);
+                Duration.seconds(0.84), 24, 31);
 
         texture = new AnimatedTexture(animIdleUp);
         texture.loop();
@@ -92,6 +92,7 @@ public class Player extends Component {
         super.onUpdate(tpf);
 
         if (physics.isMoving()) {
+            attack = false;
             if (run) {
                 if (left && texture.getAnimationChannel() != animRunLeft)
                     texture.loopAnimationChannel(animRunLeft);
@@ -146,28 +147,28 @@ public class Player extends Component {
     public void left() {
         left = true;
         right = up = down = false;
-        if (run) physics.setLinearVelocity(-speed * 3, 0);
+        if (run) physics.setLinearVelocity(-speed * 2, 0);
         else physics.setLinearVelocity(-speed, 0);
     }
 
     public void right() {
         right = true;
         left = up = down = false;
-        if (run) physics.setLinearVelocity(speed * 3, 0);
+        if (run) physics.setLinearVelocity(speed * 2, 0);
         else physics.setLinearVelocity(speed, 0);
     }
 
     public void up() {
         up = true;
         right = left = down = false;
-        if (run) physics.setLinearVelocity(0, -speed * 3);
+        if (run) physics.setLinearVelocity(0, -speed * 2);
         else physics.setLinearVelocity(0, -speed);
     }
 
     public void down() {
         down = true;
         right = left = up = false;
-        if (run) physics.setLinearVelocity(0, speed * 3);
+        if (run) physics.setLinearVelocity(0, speed * 2);
         else physics.setLinearVelocity(0, speed);
     }
 
@@ -175,4 +176,23 @@ public class Player extends Component {
         physics.setLinearVelocity(0, 0);
     }
 
+    /*
+     *
+     * For debugging purposes only
+     *   Don't try this at your own risk and just ignore it
+     *
+     */
+    public String getAction() {
+        return "\nDirection-Boolean \n Up: " + up + "\t Down: " + down
+                + "\t Left: " + left + "\t Right: " + right + "\n Action Attack: " + attack;
+    }
+
+    public String getAnimationStatus() {
+        return "Current Animation: " + texture.getAnimationChannel().getImage().getUrl();
+    }
+
+    public String getSpeed() {
+        if (run) return "Current Speed: " + (speed * 2);
+        else return "Current Speed: " + speed;
+    }
 }

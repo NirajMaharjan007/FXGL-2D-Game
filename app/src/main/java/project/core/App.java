@@ -118,6 +118,20 @@ public class App extends GameApplication {
                 player.setRun(false);
             }
         }, KeyCode.X);
+
+        getInput().addAction(new UserAction("Debug Option") {
+            @Override
+            protected void onActionBegin() {
+                System.out.println("App.onAction");
+                System.out.println("--------------------------------------------------------");
+                System.out.println("Player pos: " + player.getEntity().getPosition());
+                System.out.println("Player Actions " + player.getAction());
+                System.out.println(player.getAnimationStatus());
+                System.out.println(player.getSpeed());
+                System.out.println("--------------------------------------------------------");
+            }
+
+        }, KeyCode.Z);
     }
 
     @Override
