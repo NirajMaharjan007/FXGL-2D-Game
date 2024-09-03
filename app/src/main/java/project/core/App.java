@@ -40,8 +40,11 @@ public class App extends GameApplication {
 
         setLevelFromMap("tmx/Level_1.tmx");
 
+        getGameWorld().spawn("enemy", 512, 200);
+        
         Entity player_entity = getGameWorld().spawn("player", 128, 200);
         player = player_entity.getComponent(Player.class);
+
     }
 
     @Override

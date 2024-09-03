@@ -106,7 +106,6 @@ public class Player extends Component {
         super.onUpdate(tpf);
 
         if (physics.isMoving()) {
-//            attack = false;
             if (run) {
                 if (left && texture.getAnimationChannel() != animRunLeft)
                     texture.loopAnimationChannel(animRunLeft);
@@ -137,7 +136,7 @@ public class Player extends Component {
                 else if (down && texture.getAnimationChannel() != animWalkDown)
                     texture.loopAnimationChannel(animWalkDown);
             }
-        } else if (attack) {
+        } else if (attack && !physics.isMoving()) {
             texture.setOnCycleFinished(() -> attack = false);
 
             if (left && texture.getAnimationChannel() != animAttackLeft)
