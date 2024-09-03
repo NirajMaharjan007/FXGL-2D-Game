@@ -34,29 +34,19 @@ public class App extends GameApplication {
     }
 
     @Override
-    protected void onPreInit() {
-        super.onPreInit();
-
-    }
-
-    @Override
     protected void initGame() {
         getGameWorld().addEntityFactory(new Factory());
         getGameScene().setBackgroundColor(Color.BLACK);
 
         setLevelFromMap("tmx/Level_1.tmx");
 
-
         Entity player_entity = getGameWorld().spawn("player", 128, 200);
         player = player_entity.getComponent(Player.class);
-
     }
-
 
     @Override
     protected void initInput() {
         super.initInput();
-
         getInput().addAction(new UserAction("Up") {
             @Override
             protected void onAction() {
@@ -105,6 +95,18 @@ public class App extends GameApplication {
             }
         }, KeyCode.RIGHT);
 
+        getInput().addAction(new UserAction("Attack") {
+            @Override
+            protected void onActionBegin() {
+                player.setAttack(true);
+            }
+
+            @Override
+            protected void onActionEnd() {
+                player.stop();
+            }
+        }, KeyCode.SPACE);
+
     }
 
     @Override
@@ -113,11 +115,10 @@ public class App extends GameApplication {
         Entity walls = entityBuilder()
                 .type(EntityType.WALL)
                 .collidable()
-                .buildScreenBounds(64);
+                .buildScreenBounds(8);
 
         getPhysicsWorld().setGravity(0, 0);
         getGameWorld().addEntity(walls);
     }
-
 
 }
