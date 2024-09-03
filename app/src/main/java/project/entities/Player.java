@@ -58,13 +58,13 @@ public class Player extends Component {
 
         // Attack
         animAttackUp = new AnimationChannel(attack_image, 8, width, height,
-                Duration.seconds(0.54), 8, 15);
+                Duration.seconds(0.64), 8, 15);
         animAttackDown = new AnimationChannel(attack_image, 8, width, height,
-                Duration.seconds(0.54), 0, 7);
+                Duration.seconds(0.64), 0, 7);
         animAttackLeft = new AnimationChannel(attack_image, 8, width, height,
-                Duration.seconds(0.54), 16, 23);
+                Duration.seconds(0.64), 16, 23);
         animAttackRight = new AnimationChannel(attack_image, 8, width, height,
-                Duration.seconds(0.54), 24, 31);
+                Duration.seconds(0.64), 24, 31);
 
         //walk_attack
         animWalkAttackUp = new AnimationChannel(walk_attack_image, 6, width, height,
