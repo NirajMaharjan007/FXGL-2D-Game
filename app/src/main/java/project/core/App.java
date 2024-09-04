@@ -44,7 +44,6 @@ public class App extends GameApplication {
 
         Entity player_entity = getGameWorld().spawn("player", 128, 200);
         player = player_entity.getComponent(Player.class);
-
     }
 
     @Override

@@ -12,40 +12,44 @@ public class Factory implements EntityFactory {
     public Entity newPlayer(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
-        physics.setFixtureDef(new FixtureDef().friction(0.0 f));
-
+        physics.setFixtureDef(new FixtureDef().friction(0.0f));
 
         return entityBuilder(data)
-            .type(EntityType.PLAYER)
-            .with(physics)
-            .bbox(new HitBox(BoundingShape.box(24, 32)))
-            .collidable()
-            .with(new Player())
-            .build();
+                .type(EntityType.PLAYER)
+                .with(physics)
+                .bbox(new HitBox(BoundingShape.box(24, 32)))
+                .collidable()
+                .with(new Player())
+                .build();
     }
 
     @Spawns("enemy")
     public Entity newEnemy(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.STATIC);
-        physics.setFixtureDef(new FixtureDef().friction(0.0 f));
+        physics.setFixtureDef(new FixtureDef().friction(0.0f));
 
         return entityBuilder(data)
-            .type(EntityType.ENEMY)
-            .with(physics)
-            .bbox(new HitBox(BoundingShape.box(18, 20)))
-            .collidable()
-            .with(new Enemy())
-            .build();
+                .type(EntityType.ENEMY)
+                .with(physics)
+                .bbox(new HitBox(BoundingShape.box(18, 20)))
+                .collidable()
+                .with(new Enemy())
+                .build();
     }
 
-    @Spawns("wall") {
+    @Spawns("wall")
+    public Entity spawnWall(SpawnData data) {
+        PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.STATIC);
+        physics.setFixtureDef(new FixtureDef().friction(0.0f));
+
         return entityBuilder(data)
-            .type(EntityType.WALL)
-            .with(physics)
-            .bbox(new HitBox(BoundingShape.box(18, 20)))
-            .collidable()
-            .with(new Enemy())
-            .build();
+                .type(EntityType.WALL)
+                .with(physics)
+                .bbox(new HitBox(BoundingShape.box(18, 20)))
+                .collidable()
+                .with(new Enemy())
+                .build();
     }
 }
