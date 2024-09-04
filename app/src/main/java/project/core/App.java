@@ -41,7 +41,7 @@ public class App extends GameApplication {
         setLevelFromMap("tmx/Level_1.tmx");
 
         getGameWorld().spawn("enemy", 512, 200);
-        
+
         Entity player_entity = getGameWorld().spawn("player", 128, 200);
         player = player_entity.getComponent(Player.class);
 
@@ -140,13 +140,7 @@ public class App extends GameApplication {
     @Override
     protected void initPhysics() {
         super.initPhysics();
-        Entity walls = entityBuilder()
-                .type(EntityType.WALL)
-                .collidable()
-                .buildScreenBounds(8);
-
         getPhysicsWorld().setGravity(0, 0);
-        getGameWorld().addEntity(walls);
     }
 
 }
