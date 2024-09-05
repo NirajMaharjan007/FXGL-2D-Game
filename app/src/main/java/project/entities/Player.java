@@ -10,25 +10,25 @@ import javafx.util.Duration;
 
 public class Player extends Component {
     public static final int width = 64, height = 64, speed = 128;
-
     private final AnimatedTexture texture;
-
     // idle
     private final AnimationChannel animIdleUp, animIdleLeft, animIdleRight, animIdleDown;
     //walk
     private final AnimationChannel animWalkDown, animWalkUp, animWalkLeft, animWalkRight;
     //attack
     private final AnimationChannel animAttackUp, animAttackDown, animAttackLeft, animAttackRight;
-    
     //run
     private final AnimationChannel animRunUp, animRunDown, animRunLeft, animRunRight;
 
+    private Point2D position;
     private PhysicsComponent physics;
 
     private boolean up = true, down = false, left = false, right = false, attack = false, run = false;
 
     public Player() {
         super();
+
+        position = new Point2D(0, 0);
 
         Image idle_image = new Image("assets/textures/player/player_idle.png");
         Image walk_image = new Image("assets/textures/player/player_walk.png");
@@ -86,6 +86,7 @@ public class Player extends Component {
         physics.overwritePosition(new Point2D(x, y));
     }
 
+
     @Override
     public void onAdded() {
         super.onAdded();
@@ -98,6 +99,7 @@ public class Player extends Component {
         super.onUpdate(tpf);
 
         if (physics.isMoving()) {
+            attack = false;
             if (run) {
                 if (left && texture.getAnimationChannel() != animRunLeft)
                     texture.loopAnimationChannel(animRunLeft);
@@ -139,6 +141,10 @@ public class Player extends Component {
                 texture.loopAnimationChannel(animIdleDown);
         }
 
+    }
+
+    public boolean getAttack() {
+        return attack;
     }
 
     public void setAttack(boolean attack) {

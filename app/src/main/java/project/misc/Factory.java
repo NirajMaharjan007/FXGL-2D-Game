@@ -17,7 +17,7 @@ public class Factory implements EntityFactory {
         return entityBuilder(data)
                 .type(EntityType.PLAYER)
                 .with(physics)
-                .bbox(new HitBox(BoundingShape.box(24, 32)))
+                .bbox(new HitBox(BoundingShape.circle(16)))
                 .collidable()
                 .with(new Player())
                 .build();
@@ -32,24 +32,11 @@ public class Factory implements EntityFactory {
         return entityBuilder(data)
                 .type(EntityType.ENEMY)
                 .with(physics)
-                .bbox(new HitBox(BoundingShape.box(18, 20)))
+                .bbox(new HitBox(BoundingShape.circle(14)))
                 .collidable()
                 .with(new Enemy())
                 .build();
     }
 
-    @Spawns("wall")
-    public Entity spawnWall(SpawnData data) {
-        PhysicsComponent physics = new PhysicsComponent();
-        physics.setBodyType(BodyType.STATIC);
-        physics.setFixtureDef(new FixtureDef().friction(0.0f));
 
-        return entityBuilder(data)
-                .type(EntityType.WALL)
-                .with(physics)
-                .bbox(new HitBox(BoundingShape.box(18, 20)))
-                .collidable()
-                .with(new Enemy())
-                .build();
-    }
 }

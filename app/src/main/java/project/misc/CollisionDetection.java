@@ -1,0 +1,33 @@
+package project.misc;
+
+
+import javafx.geometry.Rectangle2D;
+import project.entities.*;
+
+public class CollisionDetection {
+    Player player;
+    Enemy enemy;
+
+    public CollisionDetection() {
+    }
+
+    public CollisionDetection(Enemy enemy, Player player) {
+        this.enemy = enemy;
+        this.player = player;
+    }
+
+    public CollisionDetection(Player player, Enemy enemy) {
+        this.player = player;
+        this.enemy = enemy;
+    }
+
+    public boolean isTouch() {
+        Rectangle2D player_rect = new Rectangle2D(player.getEntity().getX(), player.getEntity().getY(),
+                64, 64);
+
+        Rectangle2D enemy_rect = new Rectangle2D(enemy.getEntity().getX(), enemy.getEntity().getY(),
+                64, 64);
+        
+        return player_rect.intersects(enemy_rect);
+    }
+}

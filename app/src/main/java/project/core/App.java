@@ -8,13 +8,16 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import project.entities.Player;
+import project.entities.*;
 import project.misc.*;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class App extends GameApplication {
     private Player player;
+    private Enemy enemy;
+
+    private CollisionDetection detection;
 
     public static void main(String[] args) {
         try {
@@ -23,6 +26,7 @@ public class App extends GameApplication {
             embeddedShutdown();
         }
     }
+
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -40,10 +44,10 @@ public class App extends GameApplication {
 
         setLevelFromMap("tmx/Level_1.tmx");
 
-        getGameWorld().spawn("enemy", 512, 200);
+        enemy = getGameWorld().spawn("enemy", 512, 200).getComponent(Enemy.class);
+        player = getGameWorld().spawn("player", 128, 200).getComponent(Player.class);
 
-        Entity player_entity = getGameWorld().spawn("player", 128, 200);
-        player = player_entity.getComponent(Player.class);
+        detection = new CollisionDetection(player, enemy);
     }
 
     @Override
@@ -101,6 +105,10 @@ public class App extends GameApplication {
             @Override
             protected void onActionBegin() {
                 player.setAttack(true);
+                System.out.println("Enemy Hurt " + enemy.getHurt() + " Status: " + detection.isTouch());
+
+                if (detection.isTouch()) enemy.setHurt(true);
+
             }
 
             @Override
@@ -127,8 +135,9 @@ public class App extends GameApplication {
                 System.out.println("App.onAction");
                 System.out.println("--------------------------------------------------------");
                 System.out.println("Player pos: " + player.getEntity().getPosition());
-                System.out.println("Player Actions " + player.getAction());
-                System.out.println(player.getAnimationStatus());
+                System.out.println("Enemy pos: " + enemy.getEntity().getPosition());
+//                System.out.println("Player Actions " + player.getAction());
+//                System.out.println(player.getAnimationStatus());
                 System.out.println(player.getSpeed());
                 System.out.println("--------------------------------------------------------");
             }
@@ -140,6 +149,12 @@ public class App extends GameApplication {
     protected void initPhysics() {
         super.initPhysics();
         getPhysicsWorld().setGravity(0, 0);
+
+        Entity walls = entityBuilder()
+                .type(EntityType.WALL)
+                .collidable()
+                .buildScreenBounds(150);
+        getGameWorld().addEntity(walls);
     }
 
 }

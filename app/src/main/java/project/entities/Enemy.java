@@ -3,6 +3,7 @@ package project.entities;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.*;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
@@ -13,18 +14,27 @@ public class Enemy extends Component {
 
     // idle
     private final AnimationChannel animIdleUp, animIdleLeft, animIdleRight, animIdleDown;
+
+    private final AnimationChannel animHurtUp, animHurtLeft, animHurtRight, animHurtDown;
     //walk
 //    private final AnimationChannel animWalkDown, animWalkUp, animWalkLeft, animWalkRight;
     //attack
 //    private final AnimationChannel animAttackUp, animAttackDown, animAttackLeft, animAttackRight;
-    private boolean up = true, down = false, left = false, right = false, attack = false, run = false;
+    private boolean up = true, down = false,
+            left = false, right = false, attack = false,
+            run = false, hurt = false;
+
+    private Point2D position;
     private PhysicsComponent physics;
 
     public Enemy() {
         super();
+        position = new Point2D(0, 0);
 
         Image idle_image = new Image("assets/textures/enemy/idle.png");
+        Image hurt_image = new Image("assets/textures/enemy/hurt.png");
 
+        //Idle
         animIdleUp = new AnimationChannel(idle_image,
                 4, width, height, Duration.seconds(0.75), 4, 7);
         animIdleDown = new AnimationChannel(idle_image,
@@ -33,6 +43,22 @@ public class Enemy extends Component {
                 4, width, height, Duration.seconds(0.75), 8, 11);
         animIdleRight = new AnimationChannel(idle_image,
                 4, width, height, Duration.seconds(0.75), 12, 15);
+
+        //Hurt
+
+        animHurtDown = new AnimationChannel(hurt_image, 6, width, height,
+                Duration.seconds(0.74), 0, 5);
+
+        animHurtUp = new AnimationChannel(hurt_image, 6, width, height,
+                Duration.seconds(0.74), 6, 11);
+
+        animHurtLeft = new AnimationChannel(hurt_image, 6, width, height,
+                Duration.seconds(0.74), 12, 17);
+
+        animHurtRight = new AnimationChannel(hurt_image, 6, width, height,
+                Duration.seconds(0.74), 18, 23);
+
+
         texture = new AnimatedTexture(animIdleUp);
         texture.loop();
     }
@@ -49,6 +75,24 @@ public class Enemy extends Component {
         if (!physics.isMoving()) {
             if (texture.getAnimationChannel() != animIdleDown)
                 texture.loopAnimationChannel(animIdleDown);
+            if (hurt) {
+                texture.setOnCycleFinished(() -> hurt = false);
+                if (down && texture.getAnimationChannel() != animIdleDown)
+                    texture.loopAnimationChannel(animIdleDown);
+            }
         }
+    }
+
+
+    public void setPosition(double x, double y) {
+        physics.overwritePosition(new Point2D(x, y));
+    }
+
+    public boolean getHurt() {
+        return hurt;
+    }
+
+    public void setHurt(boolean b) {
+        hurt = true;
     }
 }
