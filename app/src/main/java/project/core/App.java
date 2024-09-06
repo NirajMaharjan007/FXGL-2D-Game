@@ -3,13 +3,18 @@
  */
 package project.core;
 
-import com.almasb.fxgl.app.*;
+import com.almasb.fxgl.app.ApplicationMode;
+import com.almasb.fxgl.app.GameApplication;
+import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import project.entities.*;
-import project.misc.*;
+import project.entities.Enemy;
+import project.entities.Player;
+import project.misc.CollisionDetection;
+import project.misc.EntityType;
+import project.misc.Factory;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 
@@ -103,11 +108,10 @@ public class App extends GameApplication {
                 player.stop();
                 player.setAttack(true);
                 System.out.println("Enemy Hurt " + enemy.getHurt() +
-                        " Status: " + CollisionDetection.isCollision(player, enemy));
+                        " Status: " + CollisionDetection.isTouch(player, enemy));
 
-                if (CollisionDetection.isCollision(player, enemy))
+                if (CollisionDetection.isTouch(player, enemy))
                     enemy.setHurt(true);
-
             }
 
             @Override
