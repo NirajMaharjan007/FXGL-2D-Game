@@ -3,13 +3,18 @@
  */
 package project.core;
 
-import com.almasb.fxgl.app.*;
+import com.almasb.fxgl.app.ApplicationMode;
+import com.almasb.fxgl.app.GameApplication;
+import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import project.entities.*;
-import project.misc.*;
+import project.entities.Enemy;
+import project.entities.Player;
+import project.misc.CollisionDetection;
+import project.misc.EntityType;
+import project.misc.Factory;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 
@@ -17,7 +22,6 @@ public class App extends GameApplication {
     private Player player;
     private Enemy enemy;
 
-    private CollisionDetection detection;
 
     public static void main(String[] args) {
         try {
@@ -47,7 +51,6 @@ public class App extends GameApplication {
         enemy = getGameWorld().spawn("enemy", 512, 200).getComponent(Enemy.class);
         player = getGameWorld().spawn("player", 128, 200).getComponent(Player.class);
 
-        detection = new CollisionDetection(player, enemy);
     }
 
     @Override
@@ -105,10 +108,10 @@ public class App extends GameApplication {
             @Override
             protected void onActionBegin() {
                 player.setAttack(true);
-                System.out.println("Enemy Hurt " + enemy.getHurt() + " Status: " + detection.isTouch());
+                System.out.println("Enemy Hurt " + enemy.getHurt() +
+                        " Status: " + CollisionDetection.isTouch(player, enemy));
 
-                if (detection.isTouch()) enemy.setHurt(true);
-
+                if (CollisionDetection.isTouch(player, enemy)) enemy.setHurt(true);
             }
 
             @Override

@@ -2,7 +2,8 @@ package project.entities;
 
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.texture.*;
+import com.almasb.fxgl.texture.AnimatedTexture;
+import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
@@ -20,7 +21,6 @@ public class Player extends Component {
     //run
     private final AnimationChannel animRunUp, animRunDown, animRunLeft, animRunRight;
 
-    private Point2D position;
     private PhysicsComponent physics;
 
     private boolean up = true, down = false, left = false, right = false, attack = false, run = false;
@@ -28,13 +28,10 @@ public class Player extends Component {
     public Player() {
         super();
 
-        position = new Point2D(0, 0);
-
         Image idle_image = new Image("assets/textures/player/player_idle.png");
         Image walk_image = new Image("assets/textures/player/player_walk.png");
         Image attack_image = new Image("assets/textures/player/player_attack.png");
         Image run_image = new Image("assets/textures/player/player_run.png");
-        Image walk_attack_image = new Image("assets/textures/player/player_walk_attack.png");
 
         // Idle
         animIdleUp = new AnimationChannel(idle_image,

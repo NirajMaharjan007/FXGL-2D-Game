@@ -2,7 +2,8 @@ package project.entities;
 
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.texture.*;
+import com.almasb.fxgl.texture.AnimatedTexture;
+import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
@@ -24,12 +25,10 @@ public class Enemy extends Component {
             left = false, right = false, attack = false,
             run = false, hurt = false;
 
-    private Point2D position;
     private PhysicsComponent physics;
 
     public Enemy() {
         super();
-        position = new Point2D(0, 0);
 
         Image idle_image = new Image("assets/textures/enemy/idle.png");
         Image hurt_image = new Image("assets/textures/enemy/hurt.png");
@@ -45,7 +44,6 @@ public class Enemy extends Component {
                 4, width, height, Duration.seconds(0.75), 12, 15);
 
         //Hurt
-
         animHurtDown = new AnimationChannel(hurt_image, 6, width, height,
                 Duration.seconds(0.74), 0, 5);
 
@@ -73,11 +71,12 @@ public class Enemy extends Component {
     public void onUpdate(double tpf) {
         super.onUpdate(tpf);
         if (!physics.isMoving()) {
-            if (texture.getAnimationChannel() != animIdleDown)
-                texture.loopAnimationChannel(animIdleDown);
             if (hurt) {
                 texture.setOnCycleFinished(() -> hurt = false);
-                if (down && texture.getAnimationChannel() != animIdleDown)
+                if (texture.getAnimationChannel() != animHurtDown)
+                    texture.loopAnimationChannel(animHurtDown);
+            } else {
+                if (texture.getAnimationChannel() != animIdleDown)
                     texture.loopAnimationChannel(animIdleDown);
             }
         }
