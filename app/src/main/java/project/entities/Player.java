@@ -15,6 +15,9 @@ public class Player extends Component {
     private final AnimationChannel animIdleUp, animIdleLeft, animIdleRight, animIdleDown;
     // walk
     private final AnimationChannel animWalkDown, animWalkUp, animWalkLeft, animWalkRight;
+    // walk_attack
+    private final AnimationChannel animWalkAttackUp, animWalkAttackDown, animWalkAttackLeft, animWalkAttackRight;
+
     // attack
     private final AnimationChannel animAttackUp, animAttackDown, animAttackLeft, animAttackRight;
     // run
@@ -31,6 +34,7 @@ public class Player extends Component {
         Image idle_image = new Image("assets/textures/player/player_idle.png");
         Image walk_image = new Image("assets/textures/player/player_walk.png");
         Image attack_image = new Image("assets/textures/player/player_attack.png");
+        Image walk_attack_image = new Image("assets/textures/player/player_walk_attack.png");
         Image run_image = new Image("assets/textures/player/player_run.png");
 
         // Idle
@@ -52,6 +56,16 @@ public class Player extends Component {
                 Duration.seconds(0.8), 12, 17);
         animWalkRight = new AnimationChannel(walk_image, 6, width, height,
                 Duration.seconds(0.8), 18, 23);
+
+        // walk_attack
+        animWalkAttackUp = new AnimationChannel(walk_attack_image, 6, width, height,
+                Duration.seconds(0.54), 6, 11);
+        animWalkAttackDown = new AnimationChannel(walk_attack_image, 6, width, height,
+                Duration.seconds(0.54), 0, 4);
+        animWalkAttackLeft = new AnimationChannel(walk_attack_image, 6, width, height,
+                Duration.seconds(0.54), 12, 17);
+        animWalkAttackRight = new AnimationChannel(walk_attack_image, 6, width, height,
+                Duration.seconds(0.54), 18, 23);
 
         // Attack
         animAttackUp = new AnimationChannel(attack_image, 8, width, height,
@@ -92,7 +106,7 @@ public class Player extends Component {
         super.onUpdate(tpf);
 
         if (physics.isMoving()) {
-            attack = false;
+            // attack = false;
             if (run) {
                 if (left && texture.getAnimationChannel() != animRunLeft)
                     texture.loopAnimationChannel(animRunLeft);
@@ -102,6 +116,17 @@ public class Player extends Component {
                     texture.loopAnimationChannel(animRunUp);
                 else if (down && texture.getAnimationChannel() != animRunDown)
                     texture.loopAnimationChannel(animRunDown);
+            } else if (attack) {
+                texture.setOnCycleFinished(() -> attack = false);
+
+                if (left && texture.getAnimationChannel() != animWalkAttackLeft)
+                    texture.loopAnimationChannel(animWalkAttackLeft);
+                else if (right && texture.getAnimationChannel() != animWalkAttackRight)
+                    texture.loopAnimationChannel(animWalkAttackRight);
+                else if (up && texture.getAnimationChannel() != animWalkAttackUp)
+                    texture.loopAnimationChannel(animWalkAttackUp);
+                else if (down && texture.getAnimationChannel() != animWalkAttackDown)
+                    texture.loopAnimationChannel(animWalkAttackDown);
             } else {
                 if (left && texture.getAnimationChannel() != animWalkLeft)
                     texture.loopAnimationChannel(animWalkLeft);
@@ -178,6 +203,7 @@ public class Player extends Component {
     public void down() {
         down = true;
         right = left = up = false;
+
         if (run)
             physics.setLinearVelocity(0, speed * 2);
         else
