@@ -16,25 +16,25 @@ public class Enemy extends Component {
     private final AnimationChannel animIdleUp, animIdleLeft, animIdleRight, animIdleDown;
 
     private final AnimationChannel animHurtUp, animHurtLeft, animHurtRight, animHurtDown;
-    //walk
-//    private final AnimationChannel animWalkDown, animWalkUp, animWalkLeft, animWalkRight;
-    //attack
-//    private final AnimationChannel animAttackUp, animAttackDown, animAttackLeft, animAttackRight;
+    // walk
+    // private final AnimationChannel animWalkDown, animWalkUp, animWalkLeft,
+    // animWalkRight;
+    // attack
+    // private final AnimationChannel animAttackUp, animAttackDown, animAttackLeft,
+    // animAttackRight;
     private boolean up = true, down = false,
             left = false, right = false, attack = false,
             run = false, hurt = false;
 
-    private Point2D position;
     private PhysicsComponent physics;
 
     public Enemy() {
         super();
-        position = new Point2D(0, 0);
 
         Image idle_image = new Image("assets/textures/enemy/idle.png");
         Image hurt_image = new Image("assets/textures/enemy/hurt.png");
 
-        //Idle
+        // Idle
         animIdleUp = new AnimationChannel(idle_image,
                 4, width, height, Duration.seconds(0.75), 4, 7);
         animIdleDown = new AnimationChannel(idle_image,
@@ -44,20 +44,18 @@ public class Enemy extends Component {
         animIdleRight = new AnimationChannel(idle_image,
                 4, width, height, Duration.seconds(0.75), 12, 15);
 
-        //Hurt
-
+        // Hurt
         animHurtDown = new AnimationChannel(hurt_image, 6, width, height,
-                Duration.seconds(0.74), 0, 5);
+                Duration.seconds(0.64), 0, 5);
 
         animHurtUp = new AnimationChannel(hurt_image, 6, width, height,
-                Duration.seconds(0.74), 6, 11);
+                Duration.seconds(0.64), 6, 11);
 
         animHurtLeft = new AnimationChannel(hurt_image, 6, width, height,
-                Duration.seconds(0.74), 12, 17);
+                Duration.seconds(0.64), 12, 17);
 
         animHurtRight = new AnimationChannel(hurt_image, 6, width, height,
-                Duration.seconds(0.74), 18, 23);
-
+                Duration.seconds(0.64), 18, 23);
 
         texture = new AnimatedTexture(animIdleUp);
         texture.loop();
@@ -72,17 +70,20 @@ public class Enemy extends Component {
     @Override
     public void onUpdate(double tpf) {
         super.onUpdate(tpf);
+
         if (!physics.isMoving()) {
-            if (texture.getAnimationChannel() != animIdleDown)
-                texture.loopAnimationChannel(animIdleDown);
             if (hurt) {
                 texture.setOnCycleFinished(() -> hurt = false);
-                if (down && texture.getAnimationChannel() != animIdleDown)
+                if (texture.getAnimationChannel() != animHurtDown)
+                    texture.loopAnimationChannel(animHurtDown);
+            } else {
+                if (texture.getAnimationChannel() != animIdleDown)
                     texture.loopAnimationChannel(animIdleDown);
             }
+        } else {
+            // TODO: Set Walk animation
         }
     }
-
 
     public void setPosition(double x, double y) {
         physics.overwritePosition(new Point2D(x, y));

@@ -17,8 +17,6 @@ public class App extends GameApplication {
     private Player player;
     private Enemy enemy;
 
-    private CollisionDetection detection;
-
     public static void main(String[] args) {
         try {
             launch(args);
@@ -26,7 +24,6 @@ public class App extends GameApplication {
             embeddedShutdown();
         }
     }
-
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -47,7 +44,6 @@ public class App extends GameApplication {
         enemy = getGameWorld().spawn("enemy", 512, 200).getComponent(Enemy.class);
         player = getGameWorld().spawn("player", 128, 200).getComponent(Player.class);
 
-        detection = new CollisionDetection(player, enemy);
     }
 
     @Override
@@ -104,10 +100,13 @@ public class App extends GameApplication {
         getInput().addAction(new UserAction("Attack") {
             @Override
             protected void onActionBegin() {
+                player.stop();
                 player.setAttack(true);
-                System.out.println("Enemy Hurt " + enemy.getHurt() + " Status: " + detection.isTouch());
+                System.out.println("Enemy Hurt " + enemy.getHurt() +
+                        " Status: " + CollisionDetection.isCollision(player, enemy));
 
-                if (detection.isTouch()) enemy.setHurt(true);
+                if (CollisionDetection.isCollision(player, enemy))
+                    enemy.setHurt(true);
 
             }
 
@@ -136,8 +135,8 @@ public class App extends GameApplication {
                 System.out.println("--------------------------------------------------------");
                 System.out.println("Player pos: " + player.getEntity().getPosition());
                 System.out.println("Enemy pos: " + enemy.getEntity().getPosition());
-//                System.out.println("Player Actions " + player.getAction());
-//                System.out.println(player.getAnimationStatus());
+                // System.out.println("Player Actions " + player.getAction());
+                // System.out.println(player.getAnimationStatus());
                 System.out.println(player.getSpeed());
                 System.out.println("--------------------------------------------------------");
             }

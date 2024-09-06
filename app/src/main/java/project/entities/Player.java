@@ -7,20 +7,18 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
-
 public class Player extends Component {
     public static final int width = 64, height = 64, speed = 128;
     private final AnimatedTexture texture;
     // idle
     private final AnimationChannel animIdleUp, animIdleLeft, animIdleRight, animIdleDown;
-    //walk
+    // walk
     private final AnimationChannel animWalkDown, animWalkUp, animWalkLeft, animWalkRight;
-    //attack
+    // attack
     private final AnimationChannel animAttackUp, animAttackDown, animAttackLeft, animAttackRight;
-    //run
+    // run
     private final AnimationChannel animRunUp, animRunDown, animRunLeft, animRunRight;
 
-    private Point2D position;
     private PhysicsComponent physics;
 
     private boolean up = true, down = false, left = false, right = false, attack = false, run = false;
@@ -28,13 +26,10 @@ public class Player extends Component {
     public Player() {
         super();
 
-        position = new Point2D(0, 0);
-
         Image idle_image = new Image("assets/textures/player/player_idle.png");
         Image walk_image = new Image("assets/textures/player/player_walk.png");
         Image attack_image = new Image("assets/textures/player/player_attack.png");
         Image run_image = new Image("assets/textures/player/player_run.png");
-        Image walk_attack_image = new Image("assets/textures/player/player_walk_attack.png");
 
         // Idle
         animIdleUp = new AnimationChannel(idle_image,
@@ -66,7 +61,6 @@ public class Player extends Component {
         animAttackRight = new AnimationChannel(attack_image, 8, width, height,
                 Duration.seconds(0.64), 24, 31);
 
-
         // Run
         animRunUp = new AnimationChannel(run_image, 8, width, height,
                 Duration.seconds(0.84), 8, 15);
@@ -81,18 +75,15 @@ public class Player extends Component {
         texture.loop();
     }
 
-
     public void setPosition(double x, double y) {
         physics.overwritePosition(new Point2D(x, y));
     }
-
 
     @Override
     public void onAdded() {
         super.onAdded();
         entity.getViewComponent().addChild(texture);
     }
-
 
     @Override
     public void onUpdate(double tpf) {
@@ -158,29 +149,37 @@ public class Player extends Component {
     public void left() {
         left = true;
         right = up = down = false;
-        if (run) physics.setLinearVelocity(-speed * 2, 0);
-        else physics.setLinearVelocity(-speed, 0);
+        if (run)
+            physics.setLinearVelocity(-speed * 2, 0);
+        else
+            physics.setLinearVelocity(-speed, 0);
     }
 
     public void right() {
         right = true;
         left = up = down = false;
-        if (run) physics.setLinearVelocity(speed * 2, 0);
-        else physics.setLinearVelocity(speed, 0);
+        if (run)
+            physics.setLinearVelocity(speed * 2, 0);
+        else
+            physics.setLinearVelocity(speed, 0);
     }
 
     public void up() {
         up = true;
         right = left = down = false;
-        if (run) physics.setLinearVelocity(0, -speed * 2);
-        else physics.setLinearVelocity(0, -speed);
+        if (run)
+            physics.setLinearVelocity(0, -speed * 2);
+        else
+            physics.setLinearVelocity(0, -speed);
     }
 
     public void down() {
         down = true;
         right = left = up = false;
-        if (run) physics.setLinearVelocity(0, speed * 2);
-        else physics.setLinearVelocity(0, speed);
+        if (run)
+            physics.setLinearVelocity(0, speed * 2);
+        else
+            physics.setLinearVelocity(0, speed);
     }
 
     public void stop() {
@@ -190,7 +189,7 @@ public class Player extends Component {
     /*
      *
      * For debugging purposes only
-     *   Don't try this at your own risk and just ignore it
+     * Don't try this at your own risk and just ignore it
      *
      */
     public String getAction() {
@@ -203,7 +202,9 @@ public class Player extends Component {
     }
 
     public String getSpeed() {
-        if (run) return "Current Speed: " + (speed * 2);
-        else return "Current Speed: " + speed;
+        if (run)
+            return "Current Speed: " + (speed * 2);
+        else
+            return "Current Speed: " + speed;
     }
 }
