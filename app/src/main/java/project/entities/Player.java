@@ -22,7 +22,8 @@ public class Player extends Component {
 
     private PhysicsComponent physics;
 
-    private boolean up = true, down = false, left = false, right = false, attack = false, run = false;
+    public boolean up = true, down = false, left = false, right = false;
+    private boolean attack = false, run = false;
 
     public Player() {
         super();
