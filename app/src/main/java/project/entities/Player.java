@@ -116,7 +116,7 @@ public class Player extends Component {
                     texture.loopAnimationChannel(animRunUp);
                 else if (down && texture.getAnimationChannel() != animRunDown)
                     texture.loopAnimationChannel(animRunDown);
-            } else if (attack) {
+            } else if (attack && !run) {
                 texture.setOnCycleFinished(() -> attack = false);
 
                 if (left && texture.getAnimationChannel() != animWalkAttackLeft)

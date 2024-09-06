@@ -9,91 +9,119 @@ import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 public class Enemy extends Component {
-        public static final int width = 64, height = 64, speed = 128;
+    public static final int width = 64, height = 64, speed = 128;
 
-        private final AnimatedTexture texture;
+    private final AnimatedTexture texture;
 
-        // idle
-        private final AnimationChannel animIdleUp, animIdleLeft, animIdleRight, animIdleDown;
+    // idle
+    private final AnimationChannel animIdleUp, animIdleLeft, animIdleRight, animIdleDown;
 
-        private final AnimationChannel animHurtUp, animHurtLeft, animHurtRight, animHurtDown;
-        // walk
-        // private final AnimationChannel animWalkDown, animWalkUp, animWalkLeft,
-        // animWalkRight;
-        // attack
-        // private final AnimationChannel animAttackUp, animAttackDown, animAttackLeft,
-        // animAttackRight;
-        public boolean up = true, down = false, left = false, right = false;
-        private boolean attack = false, run = false, hurt = false;
+    private final AnimationChannel animHurtUp, animHurtLeft, animHurtRight, animHurtDown;
+    // walk
+    private final AnimationChannel animWalkDown, animWalkUp, animWalkLeft, animWalkRight;
+    // animWalkRight;
+    // attack
+    // private final AnimationChannel animAttackUp, animAttackDown, animAttackLeft,
+    // animAttackRight;
+    public boolean up = true, down = false, left = false, right = false;
+    private boolean attack = false, run = false, hurt = false;
 
-        private PhysicsComponent physics;
+    private PhysicsComponent physics;
 
-        public Enemy() {
-                super();
+    public Enemy() {
+        super();
 
-                Image idle_image = new Image("assets/textures/enemy/idle.png");
-                Image hurt_image = new Image("assets/textures/enemy/hurt.png");
+        Image idle_image = new Image("assets/textures/enemy/idle.png");
+        Image hurt_image = new Image("assets/textures/enemy/hurt.png");
+        Image walk_image = new Image("assets/textures/enemy/walk.png");
 
-                // Idle
-                animIdleUp = new AnimationChannel(idle_image,
-                                4, width, height, Duration.seconds(0.75), 4, 7);
-                animIdleDown = new AnimationChannel(idle_image,
-                                4, width, height, Duration.seconds(0.75), 0, 3);
-                animIdleLeft = new AnimationChannel(idle_image,
-                                4, width, height, Duration.seconds(0.75), 8, 11);
-                animIdleRight = new AnimationChannel(idle_image,
-                                4, width, height, Duration.seconds(0.75), 12, 15);
+        // Idle
+        animIdleUp = new AnimationChannel(idle_image,
+                4, width, height, Duration.seconds(0.75), 4, 7);
+        animIdleDown = new AnimationChannel(idle_image,
+                4, width, height, Duration.seconds(0.75), 0, 3);
+        animIdleLeft = new AnimationChannel(idle_image,
+                4, width, height, Duration.seconds(0.75), 8, 11);
+        animIdleRight = new AnimationChannel(idle_image,
+                4, width, height, Duration.seconds(0.75), 12, 15);
 
-                // Hurt
-                animHurtDown = new AnimationChannel(hurt_image, 6, width, height,
-                                Duration.seconds(0.64), 0, 5);
+        // Hurt
+        animHurtDown = new AnimationChannel(hurt_image, 6, width, height,
+                Duration.seconds(0.64), 0, 5);
+        animHurtUp = new AnimationChannel(hurt_image, 6, width, height,
+                Duration.seconds(0.64), 6, 11);
+        animHurtLeft = new AnimationChannel(hurt_image, 6, width, height,
+                Duration.seconds(0.64), 12, 17);
+        animHurtRight = new AnimationChannel(hurt_image, 6, width, height,
+                Duration.seconds(0.64), 18, 23);
 
-                animHurtUp = new AnimationChannel(hurt_image, 6, width, height,
-                                Duration.seconds(0.64), 6, 11);
+        // Walk
+        animWalkUp = new AnimationChannel(walk_image, 6, width, height,
+                Duration.seconds(0.64), 6, 11);
+        animWalkDown = new AnimationChannel(walk_image, 6, width, height,
+                Duration.seconds(0.64), 0, 5);
+        animWalkLeft = new AnimationChannel(walk_image, 6, width, height,
+                Duration.seconds(0.64), 12, 17);
+        animWalkRight = new AnimationChannel(walk_image, 6, width, height,
+                Duration.seconds(0.64), 18, 23);
 
-                animHurtLeft = new AnimationChannel(hurt_image, 6, width, height,
-                                Duration.seconds(0.64), 12, 17);
+        texture = new AnimatedTexture(animIdleUp);
+        texture.loop();
+    }
 
-                animHurtRight = new AnimationChannel(hurt_image, 6, width, height,
-                                Duration.seconds(0.64), 18, 23);
+    @Override
+    public void onAdded() {
+        super.onAdded();
+        entity.getViewComponent().addChild(texture);
+    }
 
-                texture = new AnimatedTexture(animIdleUp);
-                texture.loop();
+    @Override
+    public void onUpdate(double tpf) {
+        super.onUpdate(tpf);
+
+        // move();
+
+        if (!physics.isMoving()) {
+            if (hurt) {
+                texture.setOnCycleFinished(() -> hurt = false);
+                if (texture.getAnimationChannel() != animHurtDown)
+                    texture.loopAnimationChannel(animHurtDown);
+            } else {
+                if (texture.getAnimationChannel() != animIdleDown)
+                    texture.loopAnimationChannel(animIdleDown);
+            }
+        } else {
+            if (left && texture.getAnimationChannel() != animWalkLeft)
+                texture.loopAnimationChannel(animWalkLeft);
+            else if (right && texture.getAnimationChannel() != animWalkRight)
+                texture.loopAnimationChannel(animWalkRight);
+            else if (up && texture.getAnimationChannel() != animWalkUp)
+                texture.loopAnimationChannel(animWalkUp);
+            else if (down && texture.getAnimationChannel() != animWalkDown)
+                texture.loopAnimationChannel(animWalkDown);
         }
+    }
 
-        @Override
-        public void onAdded() {
-                super.onAdded();
-                entity.getViewComponent().addChild(texture);
-        }
+    public void move() {
+        down = true;
+        right = left = up = false;
 
-        @Override
-        public void onUpdate(double tpf) {
-                super.onUpdate(tpf);
+        physics.setLinearVelocity(0, speed);
+    }
 
-                if (!physics.isMoving()) {
-                        if (hurt) {
-                                texture.setOnCycleFinished(() -> hurt = false);
-                                if (texture.getAnimationChannel() != animHurtDown)
-                                        texture.loopAnimationChannel(animHurtDown);
-                        } else {
-                                if (texture.getAnimationChannel() != animIdleDown)
-                                        texture.loopAnimationChannel(animIdleDown);
-                        }
-                } else {
-                        // TODO: Set Walk animation
-                }
-        }
+    public void stop() {
+        physics.setLinearVelocity(0, 0);
+    }
 
-        public void setPosition(double x, double y) {
-                physics.overwritePosition(new Point2D(x, y));
-        }
+    public void setPosition(double x, double y) {
+        physics.overwritePosition(new Point2D(x, y));
+    }
 
-        public boolean getHurt() {
-                return hurt;
-        }
+    public boolean getHurt() {
+        return hurt;
+    }
 
-        public void setHurt(boolean b) {
-                hurt = true;
-        }
+    public void setHurt(boolean b) {
+        hurt = true;
+    }
 }
