@@ -63,6 +63,7 @@ public class App extends GameApplication {
             @Override
             protected void onActionEnd() {
                 player.stop();
+                player.setAttack(false);
             }
         }, KeyCode.UP);
 
@@ -75,6 +76,8 @@ public class App extends GameApplication {
             @Override
             protected void onActionEnd() {
                 player.stop();
+                player.setAttack(false);
+
             }
         }, KeyCode.DOWN);
 
@@ -87,6 +90,8 @@ public class App extends GameApplication {
             @Override
             protected void onActionEnd() {
                 player.stop();
+                player.setAttack(false);
+
             }
         }, KeyCode.LEFT);
 
@@ -99,18 +104,20 @@ public class App extends GameApplication {
             @Override
             protected void onActionEnd() {
                 player.stop();
+                player.setAttack(false);
             }
         }, KeyCode.RIGHT);
 
         getInput().addAction(new UserAction("Attack") {
             @Override
             protected void onActionBegin() {
-                player.stop();
                 player.setAttack(true);
+
                 System.out.println("Enemy Hurt " + enemy.getHurt() +
+                        " Player Attack " + player.getAttack() +
                         " Status: " + CollisionDetection.isTouch(player, enemy));
 
-                if (CollisionDetection.isTouch(player, enemy))
+                if (player.getAttack() && CollisionDetection.isTouch(player, enemy))
                     enemy.setHurt(true);
             }
 
@@ -135,6 +142,7 @@ public class App extends GameApplication {
         getInput().addAction(new UserAction("Debug Option") {
             @Override
             protected void onActionBegin() {
+                enemy.move();
                 System.out.println("App.onAction");
                 System.out.println("--------------------------------------------------------");
                 System.out.println("Player pos: " + player.getEntity().getPosition());
@@ -143,6 +151,11 @@ public class App extends GameApplication {
                 // System.out.println(player.getAnimationStatus());
                 System.out.println(player.getSpeed());
                 System.out.println("--------------------------------------------------------");
+            }
+
+            @Override
+            protected void onActionEnd() {
+                enemy.stop();
             }
 
         }, KeyCode.Z);
