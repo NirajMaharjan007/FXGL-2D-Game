@@ -17,16 +17,17 @@ public class Player extends Component {
     private final AnimationChannel animWalkDown, animWalkUp, animWalkLeft, animWalkRight;
     // walk_attack
     private final AnimationChannel animWalkAttackUp, animWalkAttackDown, animWalkAttackLeft, animWalkAttackRight;
-
     // attack
     private final AnimationChannel animAttackUp, animAttackDown, animAttackLeft, animAttackRight;
     // run
     private final AnimationChannel animRunUp, animRunDown, animRunLeft, animRunRight;
+    // hurt
+    private final AnimationChannel animHurtUp, animHurtDown, animHurtLeft, animHurtRight;
 
     private PhysicsComponent physics;
 
     public boolean up = true, down = false, left = false, right = false;
-    private boolean attack = false, run = false;
+    private boolean attack = false, run = false, hurt = false;
 
     public Player() {
         super();
@@ -36,6 +37,7 @@ public class Player extends Component {
         Image attack_image = new Image("assets/textures/player/player_attack.png");
         Image walk_attack_image = new Image("assets/textures/player/player_walk_attack.png");
         Image run_image = new Image("assets/textures/player/player_run.png");
+        Image hurt_image = new Image("assets/textures/player/player_hurt.png");
 
         // Idle
         animIdleUp = new AnimationChannel(idle_image,
@@ -87,6 +89,16 @@ public class Player extends Component {
         animRunRight = new AnimationChannel(run_image, 8, width, height,
                 Duration.seconds(0.84), 24, 31);
 
+        // Hurt
+        animHurtUp = new AnimationChannel(hurt_image, 6, width, height,
+                Duration.seconds(0.64), 6, 11);
+        animHurtDown = new AnimationChannel(hurt_image, 6, width, height,
+                Duration.seconds(0.64), 0, 5);
+        animHurtLeft = new AnimationChannel(hurt_image, 6, width, height,
+                Duration.seconds(0.64), 12, 17);
+        animHurtRight = new AnimationChannel(hurt_image, 6, width, height,
+                Duration.seconds(0.64), 18, 23);
+
         texture = new AnimatedTexture(animIdleUp);
         texture.loop();
     }
@@ -116,7 +128,7 @@ public class Player extends Component {
                     texture.loopAnimationChannel(animRunUp);
                 else if (down && texture.getAnimationChannel() != animRunDown)
                     texture.loopAnimationChannel(animRunDown);
-            } else if (attack && !run) {
+            } else if (attack) {
                 texture.setOnCycleFinished(() -> attack = false);
 
                 if (left && texture.getAnimationChannel() != animWalkAttackLeft)
@@ -148,6 +160,17 @@ public class Player extends Component {
                 texture.loopAnimationChannel(animAttackUp);
             else if (down && texture.getAnimationChannel() != animAttackDown)
                 texture.loopAnimationChannel(animAttackDown);
+        } else if (hurt && !run && !physics.isMoving()) {
+            attack = false;
+            texture.setOnCycleFinished(() -> hurt = false);
+            if (left && texture.getAnimationChannel() != animHurtLeft)
+                texture.loopAnimationChannel(animHurtLeft);
+            else if (right && texture.getAnimationChannel() != animHurtRight)
+                texture.loopAnimationChannel(animHurtRight);
+            else if (up && texture.getAnimationChannel() != animHurtUp)
+                texture.loopAnimationChannel(animHurtUp);
+            else if (down && texture.getAnimationChannel() != animHurtDown)
+                texture.loopAnimationChannel(animHurtDown);
         } else {
             if (left && texture.getAnimationChannel() != animIdleLeft)
                 texture.loopAnimationChannel(animIdleLeft);
@@ -214,6 +237,14 @@ public class Player extends Component {
         physics.setLinearVelocity(0, 0);
     }
 
+    public boolean isHurt() {
+        return hurt;
+    }
+
+    public void setHurt(boolean b) {
+        this.hurt = b;
+    }
+
     /*
      *
      * For debugging purposes only
@@ -235,4 +266,5 @@ public class Player extends Component {
         else
             return "Current Speed: " + speed;
     }
+
 }

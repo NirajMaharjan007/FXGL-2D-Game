@@ -55,6 +55,12 @@ public class App extends GameApplication {
     protected void onUpdate(double tpf) {
         super.onUpdate(tpf);
         CollisionDetection.follow(player, enemy, tpf);
+
+        if (CollisionDetection.isTouch(player, enemy)) {
+            enemy.setAttack(true);
+            if (!player.isHurt())
+                player.setHurt(enemy.getAttack());
+        }
     }
 
     @Override
@@ -119,12 +125,15 @@ public class App extends GameApplication {
             protected void onActionBegin() {
                 player.setAttack(true);
 
-                System.out.println("Enemy Hurt " + enemy.getHurt() +
+                System.out.println("Enemy Hurt " + enemy.isHurt() +
                         " Player Attack " + player.getAttack() +
                         " Status: " + CollisionDetection.isTouch(player, enemy));
 
                 if (player.getAttack() && CollisionDetection.isTouch(player, enemy))
                     enemy.setHurt(true);
+
+                else if (enemy.isHurt())
+                    player.setAttack(false);
             }
 
             @Override
@@ -148,7 +157,6 @@ public class App extends GameApplication {
         getInput().addAction(new UserAction("Debug Option") {
             @Override
             protected void onActionBegin() {
-                enemy.move();
                 System.out.println("App.onAction");
                 System.out.println("--------------------------------------------------------");
                 System.out.println("Player pos: " + player.getEntity().getPosition());

@@ -60,16 +60,14 @@ public class CollisionDetection {
                     enemy.move(moveX, 0);
                 }
             } else {
-                // Move in the Y direction (vertical)
                 if (deltaY != 0) {
                     moveY = Math.signum(deltaY) * 4096 * tpf;
                     enemy.move(0, moveY);
                 }
             }
 
-            // enemy.move(moveX, moveY);
-
-            System.out.println(moveX + " " + moveY + " " + distance);
+            
+//            System.out.println(moveX + " " + moveY + " " + distance);
         } else if (distance <= 35) {
             enemy.stop();
         }

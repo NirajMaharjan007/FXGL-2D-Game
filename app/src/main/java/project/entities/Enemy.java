@@ -21,8 +21,7 @@ public class Enemy extends Component {
     private final AnimationChannel animWalkDown, animWalkUp, animWalkLeft, animWalkRight;
     // animWalkRight;
     // attack
-    // private final AnimationChannel animAttackUp, animAttackDown, animAttackLeft,
-    // animAttackRight;
+    private final AnimationChannel animAttackUp, animAttackDown, animAttackLeft, animAttackRight;
     public boolean up = true, down = false, left = false, right = false;
     private boolean attack = false, hurt = false;
 
@@ -34,6 +33,7 @@ public class Enemy extends Component {
         Image idle_image = new Image("assets/textures/enemy/idle.png");
         Image hurt_image = new Image("assets/textures/enemy/hurt.png");
         Image walk_image = new Image("assets/textures/enemy/walk.png");
+        Image attack_image = new Image("assets/textures/enemy/attack.png");
 
         // Idle
         animIdleUp = new AnimationChannel(idle_image,
@@ -65,6 +65,16 @@ public class Enemy extends Component {
         animWalkRight = new AnimationChannel(walk_image, 6, width, height,
                 Duration.seconds(0.64), 18, 23);
 
+        // Attack
+        animAttackDown = new AnimationChannel(attack_image, 8, width, height,
+                Duration.seconds(0.64), 0, 7);
+        animAttackUp = new AnimationChannel(attack_image, 8, width, height,
+                Duration.seconds(0.64), 8, 15);
+        animAttackLeft = new AnimationChannel(attack_image, 8, width, height,
+                Duration.seconds(0.64), 16, 23);
+        animAttackRight = new AnimationChannel(attack_image, 8, width, height,
+                Duration.seconds(0.64), 24, 31);
+
         texture = new AnimatedTexture(animIdleUp);
         texture.loop();
     }
@@ -84,16 +94,22 @@ public class Enemy extends Component {
         if (!physics.isMoving()) {
             if (hurt) {
                 texture.setOnCycleFinished(() -> hurt = false);
-                if (texture.getAnimationChannel() != animHurtDown)
+                if (down && texture.getAnimationChannel() != animHurtDown)
                     texture.loopAnimationChannel(animHurtDown);
+                else if (up && texture.getAnimationChannel() != animHurtUp)
+                    texture.loopAnimationChannel(animHurtUp);
+                else if (left && texture.getAnimationChannel() != animHurtLeft)
+                    texture.loopAnimationChannel(animHurtLeft);
+                else if (right && texture.getAnimationChannel() != animHurtRight)
+                    texture.loopAnimationChannel(animHurtRight);
             } else {
                 if (down && texture.getAnimationChannel() != animIdleDown)
                     texture.loopAnimationChannel(animIdleDown);
-                if (up && texture.getAnimationChannel() != animIdleUp)
+                else if (up && texture.getAnimationChannel() != animIdleUp)
                     texture.loopAnimationChannel(animIdleUp);
-                if (right && texture.getAnimationChannel() != animIdleRight)
+                else if (right && texture.getAnimationChannel() != animIdleRight)
                     texture.loopAnimationChannel(animIdleRight);
-                if (left && texture.getAnimationChannel() != animIdleLeft)
+                else if (left && texture.getAnimationChannel() != animIdleLeft)
                     texture.loopAnimationChannel(animIdleLeft);
             }
         } else {
@@ -106,13 +122,6 @@ public class Enemy extends Component {
             else if (down && texture.getAnimationChannel() != animWalkDown)
                 texture.loopAnimationChannel(animWalkDown);
         }
-    }
-
-    public void move() {
-        down = true;
-        right = left = up = false;
-
-        physics.setLinearVelocity(0, speed);
     }
 
     public void move(double x, double y) {
@@ -142,11 +151,19 @@ public class Enemy extends Component {
         physics.overwritePosition(new Point2D(x, y));
     }
 
-    public boolean getHurt() {
+    public boolean isHurt() {
         return hurt;
     }
 
     public void setHurt(boolean b) {
         hurt = true;
+    }
+
+    public void setAttack(boolean b) {
+        this.attack = b;
+    }
+
+    public boolean getAttack() {
+        return attack;
     }
 }
