@@ -87,8 +87,14 @@ public class Enemy extends Component {
                 if (texture.getAnimationChannel() != animHurtDown)
                     texture.loopAnimationChannel(animHurtDown);
             } else {
-                if (texture.getAnimationChannel() != animIdleDown)
+                if (down && texture.getAnimationChannel() != animIdleDown)
                     texture.loopAnimationChannel(animIdleDown);
+                if (up && texture.getAnimationChannel() != animIdleUp)
+                    texture.loopAnimationChannel(animIdleUp);
+                if (right && texture.getAnimationChannel() != animIdleRight)
+                    texture.loopAnimationChannel(animIdleRight);
+                if (left && texture.getAnimationChannel() != animIdleLeft)
+                    texture.loopAnimationChannel(animIdleLeft);
             }
         } else {
             if (left && texture.getAnimationChannel() != animWalkLeft)
@@ -107,6 +113,25 @@ public class Enemy extends Component {
         right = left = up = false;
 
         physics.setLinearVelocity(0, speed);
+    }
+
+    public void move(double x, double y) {
+        if (x < 0) {
+            left = true;
+            right = up = down = false;
+        } else if (x > 0) {
+            right = true;
+            left = up = down = false;
+        } else if (y > 0) {
+            down = true;
+            left = up = right = false;
+        } else if (y < 0) {
+            up = true;
+            left = right = down = false;
+        }
+
+        physics.setLinearVelocity(x, y);
+
     }
 
     public void stop() {

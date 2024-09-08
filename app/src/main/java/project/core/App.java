@@ -52,6 +52,12 @@ public class App extends GameApplication {
     }
 
     @Override
+    protected void onUpdate(double tpf) {
+        super.onUpdate(tpf);
+        CollisionDetection.follow(player, enemy, tpf);
+    }
+
+    @Override
     protected void initInput() {
         super.initInput();
         getInput().addAction(new UserAction("Up") {
