@@ -9,23 +9,23 @@ public class CollisionDetection {
         int size = 64;
         Rectangle2D player_rect = new Rectangle2D(0, 0, 0, 0);
         Rectangle2D enemy_rect = new Rectangle2D(enemy.getEntity().getX(), enemy.getEntity().getY(),
-                size, size);
+            size, size);
 
         if (player.left)
             player_rect = new Rectangle2D(player.getEntity().getX() - size, player.getEntity().getY(),
-                    size, size);
+                size, size);
 
         if (player.right)
             player_rect = new Rectangle2D(player.getEntity().getX() + size, player.getEntity().getY(),
-                    size, size);
+                size, size);
 
         if (player.up)
             player_rect = new Rectangle2D(player.getEntity().getX(), player.getEntity().getY() - size,
-                    size, size);
+                size, size);
 
         if (player.down)
             player_rect = new Rectangle2D(player.getEntity().getX(), player.getEntity().getY() + size,
-                    size, size);
+                size, size);
 
         return player_rect.intersects(enemy_rect);
     }
@@ -69,6 +69,7 @@ public class CollisionDetection {
             enemy.move(moveX, moveY);
         } else if (distance <= 35) {
             enemy.stop();
+            enemy.setAttack(true);
         }
     }
 }

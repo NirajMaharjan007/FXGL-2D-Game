@@ -56,10 +56,12 @@ public class App extends GameApplication {
         super.onUpdate(tpf);
         CollisionDetection.follow(player, enemy, tpf);
 
-        if (CollisionDetection.isTouch(player, enemy)) {
-            enemy.setAttack(true);
+        if (CollisionDetection.isTouch(player, enemy) && enemy.getAttack()) {
             if (!player.isHurt())
-                player.setHurt(enemy.getAttack());
+                player.setHurt(true);
+        } else {
+            player.setHurt(false);
+            enemy.setAttack(false);
         }
     }
 
@@ -126,8 +128,8 @@ public class App extends GameApplication {
                 player.setAttack(true);
 
                 System.out.println("Enemy Hurt " + enemy.isHurt() +
-                        " Player Attack " + player.getAttack() +
-                        " Status: " + CollisionDetection.isTouch(player, enemy));
+                    " Player Attack " + player.getAttack() +
+                    " Status: " + CollisionDetection.isTouch(player, enemy));
 
                 if (player.getAttack() && CollisionDetection.isTouch(player, enemy))
                     enemy.setHurt(true);
@@ -181,9 +183,9 @@ public class App extends GameApplication {
         getPhysicsWorld().setGravity(0, 0);
 
         Entity walls = entityBuilder()
-                .type(EntityType.WALL)
-                .collidable()
-                .buildScreenBounds(150);
+            .type(EntityType.WALL)
+            .collidable()
+            .buildScreenBounds(150);
         getGameWorld().addEntity(walls);
     }
 
