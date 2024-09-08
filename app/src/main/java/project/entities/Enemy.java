@@ -24,7 +24,7 @@ public class Enemy extends Component {
     // private final AnimationChannel animAttackUp, animAttackDown, animAttackLeft,
     // animAttackRight;
     public boolean up = true, down = false, left = false, right = false;
-    private boolean attack = false, run = false, hurt = false;
+    private boolean attack = false, hurt = false;
 
     private PhysicsComponent physics;
 
