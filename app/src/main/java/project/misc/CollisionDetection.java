@@ -31,6 +31,8 @@ public class CollisionDetection {
     }
 
     public static void follow(Player player, Enemy enemy, double tpf) {
+        double moveX = 0, moveY = 0;
+
         // Get current position of the entity
         double currentX = enemy.getEntity().getX();
         double currentY = enemy.getEntity().getY();
@@ -51,23 +53,20 @@ public class CollisionDetection {
             // double moveX = (deltaX / distance) * 2048 * tpf;
             // double moveY = (deltaY / distance) * 2048 * tpf;
 
-            double moveX = 0, moveY = 0;
-
             if (Math.abs(deltaX) > Math.abs(deltaY)) {
                 // Move in the X direction (horizontal)
                 if (deltaX != 0) {
                     moveX = Math.signum(deltaX) * 4096 * tpf;
-                    enemy.move(moveX, 0);
+                    moveY = 0;
                 }
             } else {
                 if (deltaY != 0) {
                     moveY = Math.signum(deltaY) * 4096 * tpf;
-                    enemy.move(0, moveY);
+                    moveX = 0;
                 }
             }
 
-            
-//            System.out.println(moveX + " " + moveY + " " + distance);
+            enemy.move(moveX, moveY);
         } else if (distance <= 35) {
             enemy.stop();
         }
