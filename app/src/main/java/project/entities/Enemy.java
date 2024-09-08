@@ -150,7 +150,6 @@ public class Enemy extends Component {
         }
 
         physics.setLinearVelocity(x, y);
-
     }
 
     public void stop() {
