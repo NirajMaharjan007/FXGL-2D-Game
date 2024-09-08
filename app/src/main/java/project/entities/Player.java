@@ -160,7 +160,7 @@ public class Player extends Component {
                 texture.loopAnimationChannel(animAttackUp);
             else if (down && texture.getAnimationChannel() != animAttackDown)
                 texture.loopAnimationChannel(animAttackDown);
-        } else if (hurt && !run && !physics.isMoving()) {
+        } else if (hurt) {
             attack = false;
             texture.setOnCycleFinished(() -> hurt = false);
             if (left && texture.getAnimationChannel() != animHurtLeft)

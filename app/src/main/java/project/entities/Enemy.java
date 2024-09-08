@@ -91,7 +91,16 @@ public class Enemy extends Component {
 
         // move();
 
-        if (!physics.isMoving()) {
+        if (physics.isMoving()) {
+            if (left && texture.getAnimationChannel() != animWalkLeft)
+                texture.loopAnimationChannel(animWalkLeft);
+            else if (right && texture.getAnimationChannel() != animWalkRight)
+                texture.loopAnimationChannel(animWalkRight);
+            else if (up && texture.getAnimationChannel() != animWalkUp)
+                texture.loopAnimationChannel(animWalkUp);
+            else if (down && texture.getAnimationChannel() != animWalkDown)
+                texture.loopAnimationChannel(animWalkDown);
+        } else {
             if (hurt) {
                 texture.setOnCycleFinished(() -> hurt = false);
                 if (down && texture.getAnimationChannel() != animHurtDown)
@@ -102,6 +111,16 @@ public class Enemy extends Component {
                     texture.loopAnimationChannel(animHurtLeft);
                 else if (right && texture.getAnimationChannel() != animHurtRight)
                     texture.loopAnimationChannel(animHurtRight);
+            } else if (attack) {
+                texture.setOnCycleFinished(() -> attack = false);
+                if (down && texture.getAnimationChannel() != animAttackDown)
+                    texture.loopAnimationChannel(animAttackDown);
+                else if (up && texture.getAnimationChannel() != animAttackUp)
+                    texture.loopAnimationChannel(animAttackUp);
+                else if (right && texture.getAnimationChannel() != animAttackRight)
+                    texture.loopAnimationChannel(animAttackRight);
+                else if (left && texture.getAnimationChannel() != animAttackLeft)
+                    texture.loopAnimationChannel(animAttackLeft);
             } else {
                 if (down && texture.getAnimationChannel() != animIdleDown)
                     texture.loopAnimationChannel(animIdleDown);
@@ -112,15 +131,6 @@ public class Enemy extends Component {
                 else if (left && texture.getAnimationChannel() != animIdleLeft)
                     texture.loopAnimationChannel(animIdleLeft);
             }
-        } else {
-            if (left && texture.getAnimationChannel() != animWalkLeft)
-                texture.loopAnimationChannel(animWalkLeft);
-            else if (right && texture.getAnimationChannel() != animWalkRight)
-                texture.loopAnimationChannel(animWalkRight);
-            else if (up && texture.getAnimationChannel() != animWalkUp)
-                texture.loopAnimationChannel(animWalkUp);
-            else if (down && texture.getAnimationChannel() != animWalkDown)
-                texture.loopAnimationChannel(animWalkDown);
         }
     }
 
