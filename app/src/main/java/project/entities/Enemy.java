@@ -149,6 +149,8 @@ public class Enemy extends Component {
             left = right = down = false;
         }
 
+        System.out.println(x + " " + y);
+        physics.setAngularVelocity(0);
         physics.setLinearVelocity(x, y);
     }
 

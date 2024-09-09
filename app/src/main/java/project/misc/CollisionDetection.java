@@ -9,23 +9,23 @@ public class CollisionDetection {
         int size = 64;
         Rectangle2D player_rect = new Rectangle2D(0, 0, 0, 0);
         Rectangle2D enemy_rect = new Rectangle2D(enemy.getEntity().getX(), enemy.getEntity().getY(),
-            size, size);
+                size, size);
 
         if (player.left)
             player_rect = new Rectangle2D(player.getEntity().getX() - size, player.getEntity().getY(),
-                size, size);
+                    size, size);
 
         if (player.right)
             player_rect = new Rectangle2D(player.getEntity().getX() + size, player.getEntity().getY(),
-                size, size);
+                    size, size);
 
         if (player.up)
             player_rect = new Rectangle2D(player.getEntity().getX(), player.getEntity().getY() - size,
-                size, size);
+                    size, size);
 
         if (player.down)
             player_rect = new Rectangle2D(player.getEntity().getX(), player.getEntity().getY() + size,
-                size, size);
+                    size, size);
 
         return player_rect.intersects(enemy_rect);
     }
@@ -45,7 +45,7 @@ public class CollisionDetection {
         double deltaX = targetX - currentX;
         double deltaY = targetY - currentY;
 
-        // Calculate distance to the target
+        // Calculate distance to the target Pythagorean Theorem
         double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
         // Move the follower towards the target at the specified speed
@@ -57,15 +57,12 @@ public class CollisionDetection {
                 // Move in the X direction (horizontal)
                 if (deltaX != 0) {
                     moveX = Math.signum(deltaX) * 4096 * tpf;
-                    moveY = 0;
                 }
             } else {
                 if (deltaY != 0) {
                     moveY = Math.signum(deltaY) * 4096 * tpf;
-                    moveX = 0;
                 }
             }
-
             enemy.move(moveX, moveY);
         } else if (distance <= 35) {
             enemy.stop();
