@@ -196,6 +196,10 @@ public class Player extends Component {
         this.run = run;
     }
 
+    public boolean isRunning() {
+        return run;
+    }
+
     public void left() {
         left = true;
         right = up = down = false;

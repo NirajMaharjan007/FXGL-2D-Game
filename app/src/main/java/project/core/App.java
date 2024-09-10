@@ -22,6 +22,9 @@ public class App extends GameApplication {
     private Player player;
     private Enemy enemy;
 
+    private int count = 0;
+
+
     public static void main(String[] args) {
         try {
             launch(args);
@@ -147,12 +150,17 @@ public class App extends GameApplication {
         getInput().addAction(new UserAction("Run") {
             @Override
             protected void onAction() {
-                player.setRun(true);
+                System.out.println("App.onAction " + player.isRunning() + " " + count);
+                player.setRun(count <= 42);
+                count++;
             }
 
             @Override
             protected void onActionEnd() {
                 player.setRun(false);
+                if (count >= 50) {
+                    count = 0;
+                }
             }
         }, KeyCode.X);
 
@@ -185,7 +193,7 @@ public class App extends GameApplication {
         Entity walls = entityBuilder()
             .type(EntityType.WALL)
             .collidable()
-            .buildScreenBounds(150);
+            .buildScreenBounds(256);
         getGameWorld().addEntity(walls);
     }
 
