@@ -73,6 +73,11 @@ public class App extends GameApplication {
         super.initInput();
         getInput().addAction(new UserAction("Up") {
             @Override
+            protected void onActionBegin() {
+                player.setAttack(false);
+            }
+
+            @Override
             protected void onAction() {
                 player.up();
             }
@@ -80,11 +85,15 @@ public class App extends GameApplication {
             @Override
             protected void onActionEnd() {
                 player.stop();
-                player.setAttack(false);
             }
         }, KeyCode.UP);
 
         getInput().addAction(new UserAction("Down") {
+            @Override
+            protected void onActionBegin() {
+                player.setAttack(false);
+            }
+
             @Override
             protected void onAction() {
                 player.down();
@@ -100,6 +109,11 @@ public class App extends GameApplication {
 
         getInput().addAction(new UserAction("Left") {
             @Override
+            protected void onActionBegin() {
+                player.setAttack(false);
+            }
+
+            @Override
             protected void onAction() {
                 player.left();
             }
@@ -113,6 +127,11 @@ public class App extends GameApplication {
         }, KeyCode.LEFT);
 
         getInput().addAction(new UserAction("Right") {
+            @Override
+            protected void onActionBegin() {
+                player.setAttack(false);
+            }
+
             @Override
             protected void onAction() {
                 player.right();
