@@ -23,6 +23,8 @@ public class Player extends Component {
     private final AnimationChannel animRunUp, animRunDown, animRunLeft, animRunRight;
     // hurt
     private final AnimationChannel animHurtUp, animHurtDown, animHurtLeft, animHurtRight;
+    //death
+    private final AnimationChannel animDeathUp, animDeathDown, animDeathLeft, animDeathRight;
 
     private PhysicsComponent physics;
 
@@ -38,6 +40,7 @@ public class Player extends Component {
         Image walk_attack_image = new Image("assets/textures/player/player_walk_attack.png");
         Image run_image = new Image("assets/textures/player/player_run.png");
         Image hurt_image = new Image("assets/textures/player/player_hurt.png");
+        Image death_image = new Image("assets/textures/player/player_death.png");
 
         // Idle
         animIdleUp = new AnimationChannel(idle_image,
@@ -98,6 +101,17 @@ public class Player extends Component {
             Duration.seconds(0.64), 12, 17);
         animHurtRight = new AnimationChannel(hurt_image, 6, width, height,
             Duration.seconds(0.64), 18, 23);
+
+        // Death
+        animDeathUp = new AnimationChannel(death_image, 6, width, height,
+            Duration.seconds(0.64), 6, 11);
+        animDeathDown = new AnimationChannel(death_image, 6, width, height,
+            Duration.seconds(0.64), 0, 5);
+        animDeathLeft = new AnimationChannel(death_image, 6, width, height,
+            Duration.seconds(0.64), 12, 17);
+        animDeathRight = new AnimationChannel(death_image, 6, width, height,
+            Duration.seconds(0.64), 18, 23);
+
 
         texture = new AnimatedTexture(animIdleUp);
         texture.loop();
