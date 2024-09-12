@@ -1,8 +1,7 @@
 package project.misc;
 
 import javafx.geometry.Rectangle2D;
-import project.entities.Enemy;
-import project.entities.Player;
+import project.entities.*;
 
 public class CollisionDetection {
     public static boolean isTouch(Player player, Enemy enemy) {
@@ -49,24 +48,22 @@ public class CollisionDetection {
         double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
         // Move the follower towards the target at the specified speed
-        if (distance > 35) {
-            // double moveX = (deltaX / distance) * 2048 * tpf;
-            // double moveY = (deltaY / distance) * 2048 * tpf;
-
+        if (distance > 35 && !enemy.isDead()) {
             if (Math.abs(deltaX) > Math.abs(deltaY)) {
                 // Move in the X direction (horizontal)
                 if (deltaX != 0) {
                     moveX = Math.signum(deltaX) * 4096 * tpf;
                 }
+                enemy.move(moveX, 0);
             } else {
                 if (deltaY != 0) {
                     moveY = Math.signum(deltaY) * 4096 * tpf;
                 }
+                enemy.move(0, moveY);
             }
-            enemy.move(moveX, moveY);
         } else if (distance <= 35) {
             enemy.stop();
-            enemy.setAttack(true);
+            enemy.setAttack(!enemy.isDead());
         }
     }
 }

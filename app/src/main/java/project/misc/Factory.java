@@ -12,7 +12,7 @@ public class Factory implements EntityFactory {
     public Entity newPlayer(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
-        physics.setFixtureDef(new FixtureDef().friction(1));
+        physics.setFixtureDef(new FixtureDef().friction(1.28f));
 
         return entityBuilder(data)
                 .type(EntityType.PLAYER)
@@ -20,14 +20,14 @@ public class Factory implements EntityFactory {
                 .bbox(new HitBox(BoundingShape.circle(16)))
                 .collidable()
                 .with(new Player())
-                .build();
+                .buildAndAttach();
     }
 
     @Spawns("enemy")
     public Entity newEnemy(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.KINEMATIC);
-        physics.setFixtureDef(new FixtureDef().friction(1));
+        physics.setFixtureDef(new FixtureDef().friction(1.28f));
 
         return entityBuilder(data)
                 .type(EntityType.ENEMY)
@@ -35,7 +35,7 @@ public class Factory implements EntityFactory {
                 .bbox(new HitBox(BoundingShape.circle(16)))
                 .collidable()
                 .with(new Enemy())
-                .build();
+                .buildAndAttach();
     }
 
 }
