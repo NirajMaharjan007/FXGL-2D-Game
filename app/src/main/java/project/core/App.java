@@ -24,7 +24,6 @@ public class App extends GameApplication {
 
     private int count = 0;
 
-
     public static void main(String[] args) {
         try {
             launch(args);
@@ -62,6 +61,9 @@ public class App extends GameApplication {
         if (CollisionDetection.isTouch(player, enemy) && enemy.getAttack()) {
             if (!player.isHurt())
                 player.setHurt(true);
+        } else if (player.getAttack() && enemy.getAttack()) {
+            enemy.setHurt(false);
+            player.setHurt(false);
         } else {
             player.setHurt(false);
             enemy.setAttack(false);
@@ -150,8 +152,8 @@ public class App extends GameApplication {
                 player.setAttack(true);
 
                 System.out.println("Enemy Hurt " + enemy.isHurt() +
-                    " Player Attack " + player.getAttack() +
-                    " Status: " + CollisionDetection.isTouch(player, enemy));
+                        " Player Attack " + player.getAttack() +
+                        " Status: " + CollisionDetection.isTouch(player, enemy));
 
                 if (player.getAttack() && CollisionDetection.isTouch(player, enemy))
                     enemy.setHurt(true);
@@ -170,16 +172,17 @@ public class App extends GameApplication {
             @Override
             protected void onAction() {
                 System.out.println("App.onAction " + player.isRunning() + " " + count);
-                player.setRun(count <= 42);
+                player.setRun(count <= 54);
                 count++;
             }
 
             @Override
             protected void onActionEnd() {
                 player.setRun(false);
-                if (count >= 50) {
-                    count = 0;
-                }
+                // if (count >= 50) {
+                // count = 0;
+                // }
+                count = 0;
             }
         }, KeyCode.X);
 
@@ -210,9 +213,9 @@ public class App extends GameApplication {
         getPhysicsWorld().setGravity(0, 0);
 
         Entity walls = entityBuilder()
-            .type(EntityType.WALL)
-            .collidable()
-            .buildScreenBounds(256);
+                .type(EntityType.WALL)
+                .collidable()
+                .buildScreenBounds(256);
         getGameWorld().addEntity(walls);
     }
 
