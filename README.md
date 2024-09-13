@@ -8,7 +8,9 @@ JavaFX 2D Game
 
 - [JavaFX](https://openjfx.io)
 - [FXGL](https://almasb.github.io/FXGLGames)
-- [Orc 2d Charactor](https://craftpix.net/freebies/free-top-down-orc-game-character-pixel-art/)
+- [Orc 2d Character](https://craftpix.net/freebies/free-top-down-orc-game-character-pixel-art/)
+- [Trees Texture](https://craftpix.net/freebies/free-top-down-trees-pixel-art/?num=1&count=435&sq=tree%20animation&pos=4)
+- [Rocks Texture](https://craftpix.net/freebies/free-rocks-and-stones-top-down-pixel-art/)
 
 ## Imagination
 
