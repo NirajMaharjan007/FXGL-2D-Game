@@ -20,7 +20,7 @@ public class Enemy extends Component {
     private final AnimationChannel animWalkDown, animWalkUp, animWalkLeft, animWalkRight;
     // attack
     private final AnimationChannel animAttackUp, animAttackDown, animAttackLeft, animAttackRight;
-    //Death
+    // Death
     private final AnimationChannel animDeathUp, animDeathLeft, animDeathRight, animDeathDown;
 
     public boolean up, down, left, right;
@@ -155,11 +155,12 @@ public class Enemy extends Component {
         }
     }
 
-
     public void move(double x, double y) {
         physics.setAngularVelocity(0);
-        if (!physics.isMovingX()) left = right = false;
-        if (!physics.isMovingY()) up = down = false;
+        if (!physics.isMovingX())
+            left = right = false;
+        if (!physics.isMovingY())
+            up = down = false;
 
         if (physics.isMovingX()) {
             if (x < 0) {
@@ -168,7 +169,8 @@ public class Enemy extends Component {
             } else if (x > 0) {
                 right = true;
                 left = false;
-            } else right = left = false;
+            } else
+                right = left = false;
         } else if (physics.isMovingY()) {
             if (y > 0) {
                 down = true;
@@ -176,7 +178,8 @@ public class Enemy extends Component {
             } else if (y < 0) {
                 up = true;
                 down = false;
-            } else up = down = false;
+            } else
+                up = down = false;
         }
 
         physics.setLinearVelocity(x, y);

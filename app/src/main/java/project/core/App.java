@@ -3,24 +3,23 @@
  */
 package project.core;
 
-import com.almasb.fxgl.app.ApplicationMode;
-import com.almasb.fxgl.app.GameApplication;
-import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.app.*;
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import project.entities.Enemy;
-import project.entities.Player;
-import project.misc.CollisionDetection;
-import project.misc.EntityType;
-import project.misc.Factory;
+import javafx.util.Duration;
+
+import project.entities.*;
+import project.misc.*;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class App extends GameApplication {
     private Player player;
     private Enemy enemy;
+    private Trees tree;
 
     private int count = 0, attackCount = 0;
 
@@ -48,7 +47,10 @@ public class App extends GameApplication {
 
         setLevelFromMap("tmx/Level_1.tmx");
 
+        tree = getGameWorld().spawn("trees", 200, 350).getComponent(Trees.class);
+
         enemy = getGameWorld().spawn("enemy", 512, 200).getComponent(Enemy.class);
+
         player = getGameWorld().spawn("player", 128, 200).getComponent(Player.class);
 
     }
@@ -56,7 +58,17 @@ public class App extends GameApplication {
     @Override
     protected void onUpdate(double tpf) {
         super.onUpdate(tpf);
-        CollisionDetection.follow(player, enemy, tpf);
+        FXGL.getGameTimer().runAtInterval(() -> {
+            if (player.getEntity().getY() > tree.getEntity().getBottomY() + (tree.getEntity().getHeight() / 2.5f)) {
+                // Player is below the tree, so move player in front of tree
+                player.getEntity().setZIndex(2);
+            } else {
+                // Player is above the tree, so move player behind the tree
+                player.getEntity().setZIndex(0);
+            }
+        }, Duration.seconds(0.0001));
+
+        // CollisionDetection.follow(player, enemy, tpf);
 
         if (CollisionDetection.isTouch(player, enemy) && enemy.getAttack()) {
             if (!player.isHurt())
@@ -69,7 +81,8 @@ public class App extends GameApplication {
             enemy.setAttack(false);
         }
 
-        if (enemy.isHurt()) attackCount++;
+        if (enemy.isHurt())
+            attackCount++;
         if (attackCount >= 128) {
             enemy.setDead(true);
         }
