@@ -22,7 +22,7 @@ public class App extends GameApplication {
     private Player player;
     private Enemy enemy;
 
-    private int count = 0;
+    private int count = 0, attackCount = 0;
 
     public static void main(String[] args) {
         try {
@@ -67,6 +67,11 @@ public class App extends GameApplication {
         } else {
             player.setHurt(false);
             enemy.setAttack(false);
+        }
+
+        if (enemy.isHurt()) attackCount++;
+        if (attackCount >= 128) {
+            enemy.setDead(true);
         }
     }
 
