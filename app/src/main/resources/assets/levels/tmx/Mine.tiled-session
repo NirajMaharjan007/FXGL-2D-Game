@@ -13,15 +13,21 @@
             "scaleInDock": 1
         },
         "Level_1.tmx": {
-            "scale": 1.2623125,
-            "selectedLayer": 2,
+            "scale": 3,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 399.6633163341091,
-                "y": 320.04753181165523
+                "x": 589,
+                "y": 159
             }
         },
-        "Level_1.tmx#grass": {
+        "Level_1.tmx#Plant": {
             "scaleInDock": 1
+        },
+        "Level_1.tmx#StoneGround": {
+            "scaleInDock": 0.5
+        },
+        "Level_1.tmx#grass": {
+            "scaleInDock": 1.5
         },
         "Level_1.tmx#wall": {
             "scaleInDock": 1
@@ -54,7 +60,7 @@
             }
         }
     },
-    "last.imagePath": "E:/My Test/Gradle-Test/platformer-javafx/app/src/main/resources/assets/levels/tmx",
+    "last.imagePath": "/media/niraj007/files/Coding/gradle-test/javafx-2d-game/app/src/main/resources/assets/levels/tmx",
     "map.height": 40,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,

@@ -3,13 +3,18 @@
  */
 package project.core;
 
-import com.almasb.fxgl.app.*;
+import com.almasb.fxgl.app.ApplicationMode;
+import com.almasb.fxgl.app.GameApplication;
+import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import project.entities.*;
-import project.misc.*;
+import project.entities.Enemy;
+import project.entities.Player;
+import project.misc.CollisionDetection;
+import project.misc.EntityType;
+import project.misc.Factory;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 
@@ -17,7 +22,7 @@ public class App extends GameApplication {
     private Player player;
     private Enemy enemy;
 
-    private int count = 0, attackCount = 0;
+    private int count = 0;
 
     public static void main(String[] args) {
         try {
@@ -62,11 +67,6 @@ public class App extends GameApplication {
         } else {
             player.setHurt(false);
             enemy.setAttack(false);
-        }
-
-        if (enemy.isHurt()) attackCount++;
-        if (attackCount >= 128) {
-            enemy.setDead(true);
         }
     }
 
@@ -160,8 +160,6 @@ public class App extends GameApplication {
 
                 else if (enemy.isHurt())
                     player.setAttack(false);
-
-                System.out.println("App.onActionBegin" + attackCount);
             }
 
             @Override
