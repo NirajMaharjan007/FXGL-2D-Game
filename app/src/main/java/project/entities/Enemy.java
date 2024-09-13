@@ -2,7 +2,8 @@ package project.entities;
 
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.texture.*;
+import com.almasb.fxgl.texture.AnimatedTexture;
+import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
@@ -18,13 +19,12 @@ public class Enemy extends Component {
     private final AnimationChannel animHurtUp, animHurtLeft, animHurtRight, animHurtDown;
     // walk
     private final AnimationChannel animWalkDown, animWalkUp, animWalkLeft, animWalkRight;
+    // animWalkRight;
     // attack
     private final AnimationChannel animAttackUp, animAttackDown, animAttackLeft, animAttackRight;
-    //Death
-    private final AnimationChannel animDeathUp, animDeathLeft, animDeathRight, animDeathDown;
+    public boolean up = true, down = false, left = false, right = false;
+    private boolean attack = false, hurt = false;
 
-    public boolean up, down, left, right;
-    private boolean attack = false, hurt = false, death = false;
     private PhysicsComponent physics;
 
     public Enemy() {
@@ -34,17 +34,6 @@ public class Enemy extends Component {
         Image hurt_image = new Image("assets/textures/enemy/hurt.png");
         Image walk_image = new Image("assets/textures/enemy/walk.png");
         Image attack_image = new Image("assets/textures/enemy/attack.png");
-        Image death_image = new Image("assets/textures/enemy/death.png");
-
-        // Death
-        animDeathDown = new AnimationChannel(death_image, 8, width, height,
-                Duration.seconds(0.85), 0, 7);
-        animDeathUp = new AnimationChannel(death_image, 8, width, height,
-                Duration.seconds(0.85), 8, 15);
-        animDeathLeft = new AnimationChannel(death_image, 8, width, height,
-                Duration.seconds(0.85), 16, 23);
-        animDeathRight = new AnimationChannel(death_image, 8, width, height,
-                Duration.seconds(0.85), 24, 31);
 
         // Idle
         animIdleUp = new AnimationChannel(idle_image,
@@ -96,51 +85,12 @@ public class Enemy extends Component {
         entity.getViewComponent().addChild(texture);
     }
 
-    private void idle() {
-        if (hurt) {
-            texture.setOnCycleFinished(() -> hurt = false);
-            if (down && texture.getAnimationChannel() != animHurtDown)
-                texture.loopAnimationChannel(animHurtDown);
-            else if (up && texture.getAnimationChannel() != animHurtUp)
-                texture.loopAnimationChannel(animHurtUp);
-            else if (left && texture.getAnimationChannel() != animHurtLeft)
-                texture.loopAnimationChannel(animHurtLeft);
-            else if (right && texture.getAnimationChannel() != animHurtRight)
-                texture.loopAnimationChannel(animHurtRight);
-        } else if (attack) {
-            texture.setOnCycleFinished(() -> attack = false);
-            if (down && texture.getAnimationChannel() != animAttackDown)
-                texture.loopAnimationChannel(animAttackDown);
-            else if (up && texture.getAnimationChannel() != animAttackUp)
-                texture.loopAnimationChannel(animAttackUp);
-            else if (right && texture.getAnimationChannel() != animAttackRight)
-                texture.loopAnimationChannel(animAttackRight);
-            else if (left && texture.getAnimationChannel() != animAttackLeft)
-                texture.loopAnimationChannel(animAttackLeft);
-        } else if (death) {
-            if (down && texture.getAnimationChannel() != animDeathDown)
-                texture.playAnimationChannel(animDeathDown);
-            else if (up && texture.getAnimationChannel() != animDeathUp)
-                texture.playAnimationChannel(animDeathUp);
-            else if (left && texture.getAnimationChannel() != animDeathLeft)
-                texture.playAnimationChannel(animDeathLeft);
-            else if (right && texture.getAnimationChannel() != animDeathRight)
-                texture.playAnimationChannel(animDeathRight);
-        } else {
-            if (down && texture.getAnimationChannel() != animIdleDown)
-                texture.loopAnimationChannel(animIdleDown);
-            else if (up && texture.getAnimationChannel() != animIdleUp)
-                texture.loopAnimationChannel(animIdleUp);
-            else if (right && texture.getAnimationChannel() != animIdleRight)
-                texture.loopAnimationChannel(animIdleRight);
-            else if (left && texture.getAnimationChannel() != animIdleLeft)
-                texture.loopAnimationChannel(animIdleLeft);
-        }
-    }
-
     @Override
     public void onUpdate(double tpf) {
         super.onUpdate(tpf);
+
+        // move();
+
         if (physics.isMoving()) {
             if (left && texture.getAnimationChannel() != animWalkLeft)
                 texture.loopAnimationChannel(animWalkLeft);
@@ -151,37 +101,57 @@ public class Enemy extends Component {
             else if (down && texture.getAnimationChannel() != animWalkDown)
                 texture.loopAnimationChannel(animWalkDown);
         } else {
-            this.idle();
+            if (hurt) {
+                texture.setOnCycleFinished(() -> hurt = false);
+                if (down && texture.getAnimationChannel() != animHurtDown)
+                    texture.loopAnimationChannel(animHurtDown);
+                else if (up && texture.getAnimationChannel() != animHurtUp)
+                    texture.loopAnimationChannel(animHurtUp);
+                else if (left && texture.getAnimationChannel() != animHurtLeft)
+                    texture.loopAnimationChannel(animHurtLeft);
+                else if (right && texture.getAnimationChannel() != animHurtRight)
+                    texture.loopAnimationChannel(animHurtRight);
+            } else if (attack) {
+                texture.setOnCycleFinished(() -> attack = false);
+                if (down && texture.getAnimationChannel() != animAttackDown)
+                    texture.loopAnimationChannel(animAttackDown);
+                else if (up && texture.getAnimationChannel() != animAttackUp)
+                    texture.loopAnimationChannel(animAttackUp);
+                else if (right && texture.getAnimationChannel() != animAttackRight)
+                    texture.loopAnimationChannel(animAttackRight);
+                else if (left && texture.getAnimationChannel() != animAttackLeft)
+                    texture.loopAnimationChannel(animAttackLeft);
+            } else {
+                if (down && texture.getAnimationChannel() != animIdleDown)
+                    texture.loopAnimationChannel(animIdleDown);
+                else if (up && texture.getAnimationChannel() != animIdleUp)
+                    texture.loopAnimationChannel(animIdleUp);
+                else if (right && texture.getAnimationChannel() != animIdleRight)
+                    texture.loopAnimationChannel(animIdleRight);
+                else if (left && texture.getAnimationChannel() != animIdleLeft)
+                    texture.loopAnimationChannel(animIdleLeft);
+            }
         }
     }
 
-
     public void move(double x, double y) {
-        physics.setAngularVelocity(0);
-        if (!physics.isMovingX()) left = right = false;
-        if (!physics.isMovingY()) up = down = false;
-
-        if (physics.isMovingX()) {
-            if (x < 0) {
-                left = true;
-                right = false;
-            } else if (x > 0) {
-                right = true;
-                left = false;
-            } else right = left = false;
-        } else if (physics.isMovingY()) {
-            if (y > 0) {
-                down = true;
-                up = false;
-            } else if (y < 0) {
-                up = true;
-                down = false;
-            } else up = down = false;
+        if (x < 0) {
+            left = true;
+            right = up = down = false;
+        } else if (x > 0) {
+            right = true;
+            left = up = down = false;
+        } else if (y > 0) {
+            down = true;
+            left = up = right = false;
+        } else if (y < 0) {
+            up = true;
+            left = right = down = false;
         }
 
-        physics.setLinearVelocity(x, y);
-
         System.out.println(x + " " + y);
+        physics.setAngularVelocity(0);
+        physics.setLinearVelocity(x, y);
     }
 
     public void stop() {
@@ -200,19 +170,11 @@ public class Enemy extends Component {
         hurt = true;
     }
 
-    public boolean getAttack() {
-        return attack;
-    }
-
     public void setAttack(boolean b) {
         this.attack = b;
     }
 
-    public boolean isDead() {
-        return death;
-    }
-
-    public void setDead(boolean b) {
-        death = true;
+    public boolean getAttack() {
+        return attack;
     }
 }

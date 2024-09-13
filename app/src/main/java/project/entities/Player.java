@@ -2,7 +2,8 @@ package project.entities;
 
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.texture.*;
+import com.almasb.fxgl.texture.AnimatedTexture;
+import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
@@ -24,8 +25,10 @@ public class Player extends Component {
     private final AnimationChannel animHurtUp, animHurtDown, animHurtLeft, animHurtRight;
     //death
     private final AnimationChannel animDeathUp, animDeathDown, animDeathLeft, animDeathRight;
-    public boolean up, down, left, right;
+
     private PhysicsComponent physics;
+
+    public boolean up = true, down = false, left = false, right = false;
     private boolean attack = false, run = false, hurt = false;
 
     public Player() {
@@ -41,73 +44,73 @@ public class Player extends Component {
 
         // Idle
         animIdleUp = new AnimationChannel(idle_image,
-                4, width, height, Duration.seconds(0.75), 4, 7);
+            4, width, height, Duration.seconds(0.75), 4, 7);
         animIdleLeft = new AnimationChannel(idle_image, 4,
-                width, height, Duration.seconds(0.75), 8, 11);
+            width, height, Duration.seconds(0.75), 8, 11);
         animIdleDown = new AnimationChannel(idle_image, 4,
-                width, height, Duration.seconds(0.75), 0, 3);
+            width, height, Duration.seconds(0.75), 0, 3);
         animIdleRight = new AnimationChannel(idle_image, 4,
-                width, height, Duration.seconds(0.75), 12, 15);
+            width, height, Duration.seconds(0.75), 12, 15);
 
         // Walk
         animWalkUp = new AnimationChannel(walk_image, 6, width, height,
-                Duration.seconds(0.8), 6, 11);
+            Duration.seconds(0.8), 6, 11);
         animWalkDown = new AnimationChannel(walk_image, 6, width, height,
-                Duration.seconds(0.8), 0, 5);
+            Duration.seconds(0.8), 0, 5);
         animWalkLeft = new AnimationChannel(walk_image, 6, width, height,
-                Duration.seconds(0.8), 12, 17);
+            Duration.seconds(0.8), 12, 17);
         animWalkRight = new AnimationChannel(walk_image, 6, width, height,
-                Duration.seconds(0.8), 18, 23);
+            Duration.seconds(0.8), 18, 23);
 
         // walk_attack
         animWalkAttackUp = new AnimationChannel(walk_attack_image, 6, width, height,
-                Duration.seconds(0.54), 6, 11);
+            Duration.seconds(0.54), 6, 11);
         animWalkAttackDown = new AnimationChannel(walk_attack_image, 6, width, height,
-                Duration.seconds(0.54), 0, 4);
+            Duration.seconds(0.54), 0, 4);
         animWalkAttackLeft = new AnimationChannel(walk_attack_image, 6, width, height,
-                Duration.seconds(0.54), 12, 17);
+            Duration.seconds(0.54), 12, 17);
         animWalkAttackRight = new AnimationChannel(walk_attack_image, 6, width, height,
-                Duration.seconds(0.54), 18, 23);
+            Duration.seconds(0.54), 18, 23);
 
         // Attack
         animAttackUp = new AnimationChannel(attack_image, 8, width, height,
-                Duration.seconds(0.64), 8, 15);
+            Duration.seconds(0.64), 8, 15);
         animAttackDown = new AnimationChannel(attack_image, 8, width, height,
-                Duration.seconds(0.64), 0, 7);
+            Duration.seconds(0.64), 0, 7);
         animAttackLeft = new AnimationChannel(attack_image, 8, width, height,
-                Duration.seconds(0.64), 16, 23);
+            Duration.seconds(0.64), 16, 23);
         animAttackRight = new AnimationChannel(attack_image, 8, width, height,
-                Duration.seconds(0.64), 24, 31);
+            Duration.seconds(0.64), 24, 31);
 
         // Run
         animRunUp = new AnimationChannel(run_image, 8, width, height,
-                Duration.seconds(0.84), 8, 15);
+            Duration.seconds(0.84), 8, 15);
         animRunDown = new AnimationChannel(run_image, 8, width, height,
-                Duration.seconds(0.84), 0, 7);
+            Duration.seconds(0.84), 0, 7);
         animRunLeft = new AnimationChannel(run_image, 8, width, height,
-                Duration.seconds(0.84), 16, 23);
+            Duration.seconds(0.84), 16, 23);
         animRunRight = new AnimationChannel(run_image, 8, width, height,
-                Duration.seconds(0.84), 24, 31);
+            Duration.seconds(0.84), 24, 31);
 
         // Hurt
         animHurtUp = new AnimationChannel(hurt_image, 6, width, height,
-                Duration.seconds(0.64), 6, 11);
+            Duration.seconds(0.64), 6, 11);
         animHurtDown = new AnimationChannel(hurt_image, 6, width, height,
-                Duration.seconds(0.64), 0, 5);
+            Duration.seconds(0.64), 0, 5);
         animHurtLeft = new AnimationChannel(hurt_image, 6, width, height,
-                Duration.seconds(0.64), 12, 17);
+            Duration.seconds(0.64), 12, 17);
         animHurtRight = new AnimationChannel(hurt_image, 6, width, height,
-                Duration.seconds(0.64), 18, 23);
+            Duration.seconds(0.64), 18, 23);
 
         // Death
         animDeathUp = new AnimationChannel(death_image, 6, width, height,
-                Duration.seconds(0.64), 6, 11);
+            Duration.seconds(0.64), 6, 11);
         animDeathDown = new AnimationChannel(death_image, 6, width, height,
-                Duration.seconds(0.64), 0, 5);
+            Duration.seconds(0.64), 0, 5);
         animDeathLeft = new AnimationChannel(death_image, 6, width, height,
-                Duration.seconds(0.64), 12, 17);
+            Duration.seconds(0.64), 12, 17);
         animDeathRight = new AnimationChannel(death_image, 6, width, height,
-                Duration.seconds(0.64), 18, 23);
+            Duration.seconds(0.64), 18, 23);
 
 
         texture = new AnimatedTexture(animIdleUp);
@@ -268,7 +271,7 @@ public class Player extends Component {
      */
     public String getAction() {
         return "\nDirection-Boolean \n Up: " + up + "\t Down: " + down
-                + "\t Left: " + left + "\t Right: " + right + "\n Action Attack: " + attack;
+            + "\t Left: " + left + "\t Right: " + right + "\n Action Attack: " + attack;
     }
 
     public String getAnimationStatus() {
