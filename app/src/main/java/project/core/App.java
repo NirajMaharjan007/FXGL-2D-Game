@@ -11,6 +11,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+import static project.entities.Vegetation.*;
 import project.entities.*;
 import project.misc.*;
 
@@ -59,20 +60,17 @@ public class App extends GameApplication {
     protected void onUpdate(double tpf) {
         super.onUpdate(tpf);
         FXGL.getGameTimer().runAtInterval(() -> {
-            /*
-             * TODO: FIX
-             * && player.getEntity().getX() < tree.getEntity().getX()
-             * + tree.getEntity().getWidth() && player.getEntity().getX() >
-             * tree.getEntity().getX()
-             */
-            if (player.getEntity().getY() > tree.getEntity().getY() + (tree.getEntity().getHeight() / 2f)) {
+            if (player.getEntity().getY() > tree.getEntity().getY() + (tree.getEntity().getHeight())) {
                 // Player is below the tree, so move player in front of tree
                 player.getEntity().setZIndex(2);
             } else {
                 // Player is above the tree, so move player behind the tree
-                player.getEntity().setZIndex(0);
+                if (player.getEntity().getX() >= tree.getEntity().getX() ||
+                        player.getEntity().getRightX() <= tree.getEntity().getRightX()) {
+                    player.getEntity().setZIndex(0);
+                }
             }
-        }, Duration.seconds(0.0001));
+        }, Duration.seconds(0.00002f));
 
         // CollisionDetection.follow(player, enemy, tpf);
 

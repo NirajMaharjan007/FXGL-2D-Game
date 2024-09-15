@@ -1,5 +1,5 @@
 package project.misc;
 
 public enum EntityType {
-    PLAYER, WALL, ENEMY, TREE
+    PLAYER, WALL, ENEMY, TREE, ROCK
 }
