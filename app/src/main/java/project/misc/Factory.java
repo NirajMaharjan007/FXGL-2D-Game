@@ -4,6 +4,7 @@ import com.almasb.fxgl.entity.*;
 import com.almasb.fxgl.physics.*;
 import com.almasb.fxgl.physics.box2d.dynamics.*;
 
+import static project.entities.Vegetation.*;
 import project.entities.*;
 
 import javafx.geometry.Point2D;
@@ -43,18 +44,30 @@ public class Factory implements EntityFactory {
     @Spawns("trees")
     public Entity getTrees(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
-        physics.setBodyType(BodyType.KINEMATIC);
+        physics.setBodyType(BodyType.STATIC);
 
         return entityBuilder(data)
                 .type(EntityType.TREE)
                 .with(physics)
-                .bbox(new HitBox("BOTTOM", new Point2D(0, 32), BoundingShape.circle(12)))
-                // .viewWithBBox(new Rectangle(24, 48, Color.BLUE))
-                // .view("vegetation/Trees_custom/Tree_resize_1.png")
+                .bbox(new HitBox("BOTTOM", new Point2D(0, 24), BoundingShape.circle(10)))
                 .with(new Trees())
                 .collidable()
                 .zIndex(1)
                 .buildAndAttach();
     }
 
+    @Spawns("rocks")
+    public Entity getRocks(SpawnData data) {
+        PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.STATIC);
+
+        return entityBuilder(data)
+                .type(EntityType.ROCK)
+                .with(physics)
+                .bbox(new HitBox("BOTTOM", new Point2D(0, 24), BoundingShape.circle(10)))
+                .with(new Rocks())
+                .collidable()
+                .zIndex(1)
+                .buildAndAttach();
+    }
 }
