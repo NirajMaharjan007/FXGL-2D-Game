@@ -59,7 +59,13 @@ public class App extends GameApplication {
     protected void onUpdate(double tpf) {
         super.onUpdate(tpf);
         FXGL.getGameTimer().runAtInterval(() -> {
-            if (player.getEntity().getY() > tree.getEntity().getBottomY() + (tree.getEntity().getHeight() / 2.5f)) {
+            /*
+             * TODO: FIX
+             * && player.getEntity().getX() < tree.getEntity().getX()
+             * + tree.getEntity().getWidth() && player.getEntity().getX() >
+             * tree.getEntity().getX()
+             */
+            if (player.getEntity().getY() > tree.getEntity().getY() + (tree.getEntity().getHeight() / 2f)) {
                 // Player is below the tree, so move player in front of tree
                 player.getEntity().setZIndex(2);
             } else {
