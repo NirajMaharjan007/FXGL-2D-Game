@@ -10,14 +10,17 @@ import com.almasb.fxgl.input.UserAction;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-
-import static project.entities.Vegetation.*;
 import project.entities.*;
 import project.misc.*;
 
+import java.util.Locale;
+
 import static com.almasb.fxgl.dsl.FXGL.*;
+import static project.entities.Vegetation.Trees;
 
 public class App extends GameApplication {
+    private static final String VERSION = "0.0.1", TITLE = "Orc Master";
+
     private Player player;
     private Enemy enemy;
     private Trees tree;
@@ -37,8 +40,11 @@ public class App extends GameApplication {
         settings.setApplicationMode(ApplicationMode.DEVELOPER);
         settings.setWidth(800);
         settings.setHeight(640);
-        settings.setTitle("Basic Game");
-        settings.setVersion("0.0.1");
+        settings.setTitle(TITLE);
+        settings.setVersion(VERSION);
+
+        System.out.println("OS Name: " + System.getProperty("os.name").toUpperCase(Locale.ENGLISH));
+        System.out.println("Game Version: " + VERSION);
     }
 
     @Override
@@ -50,10 +56,9 @@ public class App extends GameApplication {
 
         tree = getGameWorld().spawn("trees", 200, 350).getComponent(Trees.class);
 
-        enemy = getGameWorld().spawn("enemy", 512, 200).getComponent(Enemy.class);
-
         player = getGameWorld().spawn("player", 128, 200).getComponent(Player.class);
 
+        enemy = getGameWorld().spawn("enemy", 512, 200).getComponent(Enemy.class);
     }
 
     @Override
@@ -65,14 +70,26 @@ public class App extends GameApplication {
                 player.getEntity().setZIndex(2);
             } else {
                 // Player is above the tree, so move player behind the tree
-                if (player.getEntity().getX() >= tree.getEntity().getX() ||
-                        player.getEntity().getRightX() <= tree.getEntity().getRightX()) {
+                if (player.getEntity().getX() <= tree.getEntity().getX() ||
+                        player.getEntity().getRightX() >= tree.getEntity().getRightX()) {
                     player.getEntity().setZIndex(0);
                 }
             }
-        }, Duration.seconds(0.00002f));
 
-        // CollisionDetection.follow(player, enemy, tpf);
+            // For enemy
+            if (enemy.getEntity().getY() > tree.getEntity().getY() + (tree.getEntity().getHeight())) {
+                // Player is below the tree, so move player in front of tree
+                enemy.getEntity().setZIndex(2);
+            } else {
+                // Player is above the tree, so move player behind the tree
+                if (enemy.getEntity().getX() <= tree.getEntity().getX() ||
+                        enemy.getEntity().getRightX() >= tree.getEntity().getRightX()) {
+                    enemy.getEntity().setZIndex(0);
+                }
+            }
+        }, Duration.seconds(0.0000024f));
+
+        CollisionDetection.follow(player, enemy, tpf);
 
         if (CollisionDetection.isTouch(player, enemy) && enemy.getAttack()) {
             if (!player.isHurt())

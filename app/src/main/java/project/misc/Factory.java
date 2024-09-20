@@ -2,20 +2,22 @@ package project.misc;
 
 import com.almasb.fxgl.entity.*;
 import com.almasb.fxgl.physics.*;
+import com.almasb.fxgl.physics.box2d.collision.shapes.MassData;
 import com.almasb.fxgl.physics.box2d.dynamics.*;
-
-import static project.entities.Vegetation.*;
+import javafx.geometry.Point2D;
 import project.entities.*;
 
-import javafx.geometry.Point2D;
 import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
+import static project.entities.Vegetation.Rocks;
+import static project.entities.Vegetation.Trees;
 
 public class Factory implements EntityFactory {
     @Spawns("player")
     public Entity newPlayer(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
-        physics.setFixtureDef(new FixtureDef().friction(1.28f));
+        physics.setFixtureDef(new FixtureDef().friction(0.54f));
+
 
         return entityBuilder(data)
                 .type(EntityType.PLAYER)
@@ -28,9 +30,18 @@ public class Factory implements EntityFactory {
 
     @Spawns("enemy")
     public Entity newEnemy(SpawnData data) {
+
+
         PhysicsComponent physics = new PhysicsComponent();
-        physics.setBodyType(BodyType.KINEMATIC);
-        physics.setFixtureDef(new FixtureDef().friction(1.28f));
+        physics.setBodyType(BodyType.DYNAMIC);
+
+        physics.setOnPhysicsInitialized(() -> {
+            MassData massData = new MassData();
+            massData.mass = 50f;
+
+            physics.setFixtureDef(new FixtureDef().friction(0.8f));
+            physics.getBody().setMassData(massData);
+        });
 
         return entityBuilder(data)
                 .type(EntityType.ENEMY)
