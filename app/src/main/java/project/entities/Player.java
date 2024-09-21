@@ -2,8 +2,7 @@ package project.entities;
 
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.texture.AnimatedTexture;
-import com.almasb.fxgl.texture.AnimationChannel;
+import com.almasb.fxgl.texture.*;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
@@ -25,10 +24,10 @@ public class Player extends Component {
     private final AnimationChannel animHurtUp, animHurtDown, animHurtLeft, animHurtRight;
     // death
     private final AnimationChannel animDeathUp, animDeathDown, animDeathLeft, animDeathRight;
-
-    private PhysicsComponent physics;
-
     public boolean up = true, down = false, left = false, right = false;
+
+    private double health = 100;
+    private PhysicsComponent physics;
     private boolean attack = false, run = false, hurt = false, death = false;
 
     public Player() {
@@ -131,7 +130,6 @@ public class Player extends Component {
         super.onUpdate(tpf);
 
         if (physics.isMoving()) {
-            // attack = false;
             if (run) {
                 if (left && texture.getAnimationChannel() != animRunLeft)
                     texture.loopAnimationChannel(animRunLeft);
@@ -165,7 +163,6 @@ public class Player extends Component {
         } else {
             this.idle();
         }
-
     }
 
     private void idle() {
@@ -181,7 +178,6 @@ public class Player extends Component {
             else if (down && texture.getAnimationChannel() != animAttackDown)
                 texture.loopAnimationChannel(animAttackDown);
         } else if (hurt) {
-            attack = false;
             texture.setOnCycleFinished(() -> hurt = false);
             if (left && texture.getAnimationChannel() != animHurtLeft)
                 texture.loopAnimationChannel(animHurtLeft);
@@ -191,6 +187,15 @@ public class Player extends Component {
                 texture.loopAnimationChannel(animHurtUp);
             else if (down && texture.getAnimationChannel() != animHurtDown)
                 texture.loopAnimationChannel(animHurtDown);
+        } else if (death) {
+            if (left && texture.getAnimationChannel() != animDeathLeft)
+                texture.loopAnimationChannel(animDeathLeft);
+            else if (right && texture.getAnimationChannel() != animDeathRight)
+                texture.loopAnimationChannel(animDeathRight);
+            else if (up && texture.getAnimationChannel() != animDeathUp)
+                texture.loopAnimationChannel(animDeathUp);
+            else if (down && texture.getAnimationChannel() != animDeathDown)
+                texture.loopAnimationChannel(animDeathDown);
         } else {
             if (left && texture.getAnimationChannel() != animIdleLeft)
                 texture.loopAnimationChannel(animIdleLeft);
@@ -203,12 +208,20 @@ public class Player extends Component {
         }
     }
 
-    public void setDeath(boolean death) {
-        this.death = death;
+    public boolean isHurt() {
+        return hurt;
     }
 
-    public boolean isDeath() {
+    public void setHurt(boolean b) {
+        this.hurt = b;
+    }
+
+    public boolean isDead() {
         return death;
+    }
+
+    public void setDeath(boolean b) {
+        this.death = b;
     }
 
     public boolean getAttack() {
@@ -266,14 +279,6 @@ public class Player extends Component {
 
     public void stop() {
         physics.setLinearVelocity(0, 0);
-    }
-
-    public boolean isHurt() {
-        return hurt;
-    }
-
-    public void setHurt(boolean b) {
-        this.hurt = b;
     }
 
     /*

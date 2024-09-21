@@ -4,7 +4,6 @@
 package project.core;
 
 import com.almasb.fxgl.app.*;
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import javafx.scene.input.KeyCode;
@@ -19,8 +18,8 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 import static project.entities.Vegetation.Trees;
 
 public class App extends GameApplication {
+    protected static final int WIDTH = 800, HEIGHT = 640;
     private static final String VERSION = "0.0.1", TITLE = "Orc Master";
-
     private Player player;
     private Enemy enemy;
     private Trees tree;
@@ -38,8 +37,8 @@ public class App extends GameApplication {
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setApplicationMode(ApplicationMode.DEVELOPER);
-        settings.setWidth(800);
-        settings.setHeight(640);
+        settings.setWidth(WIDTH);
+        settings.setHeight(HEIGHT);
         settings.setTitle(TITLE);
         settings.setVersion(VERSION);
 
@@ -64,7 +63,7 @@ public class App extends GameApplication {
     @Override
     protected void onUpdate(double tpf) {
         super.onUpdate(tpf);
-        FXGL.getGameTimer().runAtInterval(() -> {
+        getGameTimer().runAtInterval(() -> {
             if (player.getEntity().getY() > tree.getEntity().getY() + (tree.getEntity().getHeight())) {
                 // Player is below the tree, so move player in front of tree
                 player.getEntity().setZIndex(2);
@@ -86,6 +85,19 @@ public class App extends GameApplication {
                         enemy.getEntity().getRightX() >= tree.getEntity().getRightX()) {
                     enemy.getEntity().setZIndex(0);
                 }
+            }
+
+            // For player and enemy
+            if (enemy.getAttack()) {
+                enemy.getEntity().setZIndex(2);
+                player.getEntity().setZIndex(0);
+            }
+            if (player.getAttack()) {
+                player.getEntity().setZIndex(2);
+                enemy.getEntity().setZIndex(0);
+            } else if (enemy.getAttack() && player.getAttack()) {
+                enemy.setAttack(false);
+                player.setAttack(false);
             }
         }, Duration.seconds(0.0000024f));
 
@@ -211,17 +223,17 @@ public class App extends GameApplication {
             @Override
             protected void onAction() {
                 System.out.println("App.onAction " + player.isRunning() + " " + count);
-                player.setRun(count <= 54);
+                player.setRun(count <= 64);
                 count++;
             }
 
             @Override
             protected void onActionEnd() {
                 player.setRun(false);
-                // if (count >= 50) {
-                // count = 0;
-                // }
-                count = 0;
+                if (count >= 64) {
+                    count = 0;
+                }
+//                count = 0;
             }
         }, KeyCode.X);
 
@@ -240,7 +252,7 @@ public class App extends GameApplication {
 
             @Override
             protected void onActionEnd() {
-                enemy.stop();
+                attackCount = 0;
             }
 
         }, KeyCode.Z);

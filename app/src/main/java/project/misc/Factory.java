@@ -11,13 +11,20 @@ import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
 import static project.entities.Vegetation.Rocks;
 import static project.entities.Vegetation.Trees;
 
+
 public class Factory implements EntityFactory {
     @Spawns("player")
     public Entity newPlayer(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
-        physics.setFixtureDef(new FixtureDef().friction(0.54f));
 
+        physics.setOnPhysicsInitialized(() -> {
+            MassData massData = new MassData();
+            massData.mass = 1.00f;
+
+            physics.setFixtureDef(new FixtureDef().friction(0.54f));
+            physics.getBody().setMassData(massData);
+        });
 
         return entityBuilder(data)
                 .type(EntityType.PLAYER)
@@ -30,14 +37,12 @@ public class Factory implements EntityFactory {
 
     @Spawns("enemy")
     public Entity newEnemy(SpawnData data) {
-
-
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
 
         physics.setOnPhysicsInitialized(() -> {
             MassData massData = new MassData();
-            massData.mass = 50f;
+            massData.mass = 2048f;
 
             physics.setFixtureDef(new FixtureDef().friction(0.8f));
             physics.getBody().setMassData(massData);
