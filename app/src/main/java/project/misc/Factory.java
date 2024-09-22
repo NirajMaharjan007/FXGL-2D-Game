@@ -80,7 +80,7 @@ public class Factory implements EntityFactory {
         return entityBuilder(data)
                 .type(EntityType.ROCK)
                 .with(physics)
-                .bbox(new HitBox("BOTTOM", new Point2D(0, 24), BoundingShape.circle(10)))
+                .bbox(new HitBox(BoundingShape.box(40, 40)))
                 .with(new Rocks())
                 .collidable()
                 .zIndex(1)

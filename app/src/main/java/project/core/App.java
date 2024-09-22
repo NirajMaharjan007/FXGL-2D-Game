@@ -15,6 +15,7 @@ import project.misc.*;
 import java.util.Locale;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
+import static project.entities.Vegetation.Rocks;
 import static project.entities.Vegetation.Trees;
 
 public class App extends GameApplication {
@@ -23,6 +24,7 @@ public class App extends GameApplication {
     private Player player;
     private Enemy enemy;
     private Trees tree;
+    private Rocks rocks;
 
     private int count = 0, attackCount = 0;
 
@@ -53,6 +55,8 @@ public class App extends GameApplication {
 
         setLevelFromMap("tmx/Level_1.tmx");
 
+        rocks = getGameWorld().spawn("rocks", 300, 300).getComponent(Rocks.class);
+
         tree = getGameWorld().spawn("trees", 200, 350).getComponent(Trees.class);
 
         player = getGameWorld().spawn("player", 128, 200).getComponent(Player.class);
@@ -64,16 +68,20 @@ public class App extends GameApplication {
     protected void onUpdate(double tpf) {
         super.onUpdate(tpf);
         getGameTimer().runAtInterval(() -> {
-            if (player.getEntity().getY() > tree.getEntity().getY() + (tree.getEntity().getHeight())) {
+            if (player.getEntity().getY() > tree.getEntity().getY() + tree.getEntity().getHeight()
+                    || player.getEntity().getY() > rocks.getEntity().getY()) {
                 // Player is below the tree, so move player in front of tree
                 player.getEntity().setZIndex(2);
             } else {
                 // Player is above the tree, so move player behind the tree
                 if (player.getEntity().getX() <= tree.getEntity().getX() ||
-                        player.getEntity().getRightX() >= tree.getEntity().getRightX()) {
+                        player.getEntity().getRightX() >= tree.getEntity().getRightX() ||
+                        player.getEntity().getX() <= rocks.getEntity().getX() ||
+                        player.getEntity().getRightX() >= rocks.getEntity().getRightX()) {
                     player.getEntity().setZIndex(0);
                 }
             }
+
 
             // For enemy
             if (enemy.getEntity().getY() > tree.getEntity().getY() + (tree.getEntity().getHeight())) {
@@ -96,8 +104,8 @@ public class App extends GameApplication {
                 player.getEntity().setZIndex(2);
                 enemy.getEntity().setZIndex(0);
             } else if (enemy.getAttack() && player.getAttack()) {
-                enemy.setAttack(false);
-                player.setAttack(false);
+                enemy.setHurt(false);
+                player.setHurt(false);
             }
         }, Duration.seconds(0.0000024f));
 
@@ -106,9 +114,6 @@ public class App extends GameApplication {
         if (CollisionDetection.isTouch(player, enemy) && enemy.getAttack()) {
             if (!player.isHurt())
                 player.setHurt(true);
-        } else if (player.getAttack() && enemy.getAttack()) {
-            enemy.setHurt(false);
-            player.setHurt(false);
         } else {
             player.setHurt(false);
             enemy.setAttack(false);
@@ -116,7 +121,7 @@ public class App extends GameApplication {
 
         if (enemy.isHurt())
             attackCount++;
-        if (attackCount >= 128) {
+        if (attackCount >= 512) {
             enemy.setDead(true);
         }
     }

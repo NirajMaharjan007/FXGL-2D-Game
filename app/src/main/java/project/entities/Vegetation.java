@@ -1,15 +1,16 @@
 package project.entities;
 
-import static com.almasb.fxgl.dsl.FXGL.getAssetLoader;
-
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.Texture;
+
+import static com.almasb.fxgl.dsl.FXGL.getAssetLoader;
 
 public class Vegetation {
 
     // private static final int WIDTH = 64, HEIGHT = 64;
 
     public enum Types {
+
     }
 
     public static class Rocks extends Component {
@@ -17,7 +18,7 @@ public class Vegetation {
 
         public Rocks() {
             super();
-            texture = getAssetLoader().loadTexture("vegetation/Rocks_custom/Rock_resize_1.png");
+            texture = getAssetLoader().loadTexture("vegetation/Rocks/Rock1_1.png");
         }
 
         @Override
