@@ -82,7 +82,6 @@ public class App extends GameApplication {
                 }
             }
 
-
             // For enemy
             if (enemy.getEntity().getY() > tree.getEntity().getY() + (tree.getEntity().getHeight())) {
                 // Player is below the tree, so move player in front of tree
@@ -238,7 +237,7 @@ public class App extends GameApplication {
                 if (count >= 64) {
                     count = 0;
                 }
-//                count = 0;
+                // count = 0;
             }
         }, KeyCode.X);
 
@@ -249,8 +248,7 @@ public class App extends GameApplication {
                 System.out.println("--------------------------------------------------------");
                 System.out.println("Player pos: " + player.getEntity().getPosition());
                 System.out.println("Enemy pos: " + enemy.getEntity().getPosition());
-                // System.out.println("Player Actions " + player.getAction());
-                // System.out.println(player.getAnimationStatus());
+                System.out.println("Player Actions " + player.getAction());
                 System.out.println(player.getSpeed());
                 System.out.println("--------------------------------------------------------");
             }
