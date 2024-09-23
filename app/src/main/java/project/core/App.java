@@ -107,12 +107,17 @@ public class App extends GameApplication {
                 player.setHurt(false);
             }
         }, Duration.seconds(0.0000024f));
-
+        System.out.println("App.onUpdate()" + player.health);
         CollisionDetection.follow(player, enemy, tpf);
 
         if (CollisionDetection.isTouch(player, enemy) && enemy.getAttack()) {
-            if (!player.isHurt())
+            if (!player.isHurt()) {
                 player.setHurt(true);
+                player.health -= 16;
+            } else if (player.isDead()) {
+                enemy.setAttack(false);
+                player.setHurt(false);
+            }
         } else {
             player.setHurt(false);
             enemy.setAttack(false);
@@ -120,8 +125,12 @@ public class App extends GameApplication {
 
         if (enemy.isHurt())
             attackCount++;
-        if (attackCount >= 512) {
+        if (attackCount >= 512)
             enemy.setDead(true);
+
+        if (player.health <= 0) {
+            player.setDeath(true);
+            player.health = 0;
         }
     }
 
