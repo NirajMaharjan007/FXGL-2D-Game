@@ -9,6 +9,8 @@ import javafx.util.Duration;
 
 public class Player extends Component {
     public static final int width = 64, height = 64, speed = 128;
+    public double health = 50;
+
     private final AnimatedTexture texture;
     // idle
     private final AnimationChannel animIdleUp, animIdleLeft, animIdleRight, animIdleDown;
@@ -26,7 +28,6 @@ public class Player extends Component {
     private final AnimationChannel animDeathUp, animDeathDown, animDeathLeft, animDeathRight;
     public boolean up = true, down = false, left = false, right = false;
 
-    private double health = 100;
     private PhysicsComponent physics;
     private boolean attack = false, run = false, hurt = false, death = false;
 
@@ -102,14 +103,14 @@ public class Player extends Component {
                 Duration.seconds(0.64), 18, 23);
 
         // Death
-        animDeathUp = new AnimationChannel(death_image, 6, width, height,
-                Duration.seconds(0.64), 6, 11);
-        animDeathDown = new AnimationChannel(death_image, 6, width, height,
-                Duration.seconds(0.64), 0, 5);
-        animDeathLeft = new AnimationChannel(death_image, 6, width, height,
-                Duration.seconds(0.64), 12, 17);
-        animDeathRight = new AnimationChannel(death_image, 6, width, height,
-                Duration.seconds(0.64), 18, 23);
+        animDeathUp = new AnimationChannel(death_image, 8, width, height,
+                Duration.seconds(0.64), 8, 15);
+        animDeathDown = new AnimationChannel(death_image, 8, width, height,
+                Duration.seconds(0.64), 0, 7);
+        animDeathLeft = new AnimationChannel(death_image, 8, width, height,
+                Duration.seconds(0.64), 16, 23);
+        animDeathRight = new AnimationChannel(death_image, 8, width, height,
+                Duration.seconds(0.64), 24, 31);
 
         texture = new AnimatedTexture(animIdleUp);
         texture.loop();
@@ -187,15 +188,15 @@ public class Player extends Component {
                 texture.loopAnimationChannel(animHurtUp);
             else if (down && texture.getAnimationChannel() != animHurtDown)
                 texture.loopAnimationChannel(animHurtDown);
-        } else if (death) {
+        } else if (death && !hurt) {
             if (left && texture.getAnimationChannel() != animDeathLeft)
-                texture.loopAnimationChannel(animDeathLeft);
+                texture.playAnimationChannel(animDeathLeft);
             else if (right && texture.getAnimationChannel() != animDeathRight)
-                texture.loopAnimationChannel(animDeathRight);
+                texture.playAnimationChannel(animDeathRight);
             else if (up && texture.getAnimationChannel() != animDeathUp)
-                texture.loopAnimationChannel(animDeathUp);
+                texture.playAnimationChannel(animDeathUp);
             else if (down && texture.getAnimationChannel() != animDeathDown)
-                texture.loopAnimationChannel(animDeathDown);
+                texture.playAnimationChannel(animDeathDown);
         } else {
             if (left && texture.getAnimationChannel() != animIdleLeft)
                 texture.loopAnimationChannel(animIdleLeft);
