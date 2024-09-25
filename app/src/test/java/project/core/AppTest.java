@@ -3,6 +3,22 @@
  */
 package project.core;
 
-class AppTest {
+import org.junit.jupiter.api.Test;
+import project.misc.ShortPathDetection;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+class AppTest {
+    @Test
+    void shortPath() {
+        ShortPathDetection pathFinder = new ShortPathDetection(10, 10);
+        List<ShortPathDetection.Node> path = pathFinder.findPath(0, 0, 9, 9);
+
+        for (ShortPathDetection.Node node : path) {
+            System.out.println("Step: (" + node.x + ", " + node.y + ")");
+        }
+        assertNotNull(path);
+    }
 }
