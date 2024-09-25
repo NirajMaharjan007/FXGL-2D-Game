@@ -3,12 +3,14 @@
  */
 package project.core;
 
+import com.almasb.fxgl.app.GameSettings;
 import org.junit.jupiter.api.Test;
 import project.misc.ShortPathDetection;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AppTest {
     @Test
@@ -20,5 +22,27 @@ class AppTest {
             System.out.println("Step: (" + node.x + ", " + node.y + ")");
         }
         assertNotNull(path);
+    }
+
+    @Test
+    public void testInitSettingsTime() {
+        GameSettings settings = new GameSettings();
+        // Start time measurement
+        long startTime = System.currentTimeMillis();
+        // Call the method you want to test
+        App gameApp = new App();
+        gameApp.initSettings(settings);  // null for the sake of testing, normally you'd pass GameSettings
+
+        // End time measurement
+        long endTime = System.currentTimeMillis();
+        long timeTaken = endTime - startTime;
+
+        // You can set a threshold for acceptable execution time, e.g., 500 ms
+        long maxAllowedTime = 256;
+
+        System.out.println("time taken:" + timeTaken + " ms");
+
+        // Assert that the time taken is less than the max allowed time
+        assertTrue(timeTaken < maxAllowedTime, "Initialization took too long: " + timeTaken + " ms");
     }
 }
