@@ -20,7 +20,7 @@ import static project.entities.Vegetation.Trees;
 
 public class App extends GameApplication {
     protected static final int WIDTH = 800, HEIGHT = 640;
-    private static final String VERSION = "0.0.1", TITLE = "Orc Master";
+    private static final String VERSION = "1.0.0dev", TITLE = "Orc Master";
     private Player player;
     private Enemy enemy;
     private Trees tree;
@@ -34,6 +34,12 @@ public class App extends GameApplication {
         } catch (Exception e) {
             embeddedShutdown();
         }
+    }
+
+    @Override
+    protected void onPreInit() {
+        super.onPreInit();
+
     }
 
     @Override

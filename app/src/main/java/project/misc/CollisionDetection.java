@@ -1,8 +1,7 @@
 package project.misc;
 
 import javafx.geometry.Rectangle2D;
-import project.entities.Enemy;
-import project.entities.Player;
+import project.entities.*;
 
 public class CollisionDetection {
     public static boolean isTouch(Player player, Enemy enemy) {

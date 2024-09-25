@@ -22,7 +22,7 @@ public class Factory implements EntityFactory {
             MassData massData = new MassData();
             massData.mass = 1.00f;
 
-            physics.setFixtureDef(new FixtureDef().friction(0.54f));
+            physics.setFixtureDef(new FixtureDef().friction(0.54f).density(0.24f));
             physics.getBody().setMassData(massData);
         });
 
@@ -44,7 +44,8 @@ public class Factory implements EntityFactory {
             MassData massData = new MassData();
             massData.mass = 2048f;
 
-            physics.setFixtureDef(new FixtureDef().friction(0.8f));
+//            physics.setFixtureDef(new FixtureDef().friction(0.8f));
+            physics.setFixtureDef(new FixtureDef().friction(0).density(0.2f));
             physics.getBody().setMassData(massData);
         });
 
