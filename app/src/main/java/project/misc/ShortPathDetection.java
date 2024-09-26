@@ -2,11 +2,13 @@ package project.misc;
 
 import org.jetbrains.annotations.NotNull;
 
+import javafx.util.*;
+
 import java.util.*;
 
 public class ShortPathDetection {
     private static final int[][] DIRECTIONS = {
-            {0, 1}, {1, 0}, {0, -1}, {-1, 0}  // Up, Right, Down, Left
+            { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } // Up, Right, Down, Left
     };
     private static final int TILE_SIZE = 16;
     private Node[][] grid;
@@ -25,93 +27,105 @@ public class ShortPathDetection {
         }
     }
 
-    public List<Node> findPath(int startX, int startY, int targetX, int targetY) {
-        Node startNode = grid[startX][startY];
-        Node targetNode = grid[targetX][targetY];
+    // Find shortest path from player to enemy
+    public List<Pair<Integer, Integer>> findPath(int startX, int startY, int targetX, int targetY) {
+        Node startNode = new Node(startX / TILE_SIZE, startY / TILE_SIZE);
+        Node targetNode = new Node(targetX / TILE_SIZE, targetY / TILE_SIZE);
 
-        PriorityQueue<Node> openList = new PriorityQueue<>();
-        Set<Node> closedList = new HashSet<>();
+        // Priority queue to store nodes based on fCost (lowest fCost first)
+        PriorityQueue<Node> openList = new PriorityQueue<>(Comparator.comparingDouble(n -> n.fCost));
+        Set<Pair<Integer, Integer>> closedList = new HashSet<>();
 
-        startNode.gCost = 0;
-        startNode.hCost = heuristic(startNode, targetNode);
-        startNode.fCost = startNode.gCost + startNode.hCost;
+        // Add the start node to the open list
         openList.add(startNode);
 
         while (!openList.isEmpty()) {
-            Node current = openList.poll();
+            Node currentNode = openList.poll();
 
-            // If the target node is reached, reconstruct the path
-            if (current.equals(targetNode)) {
-                return reconstructPath(current);
+            // If we reached the target node, reconstruct and return the path
+            if (currentNode.x == targetNode.x && currentNode.y == targetNode.y) {
+                return reconstructPath(currentNode);
             }
 
-            closedList.add(current);
+            closedList.add(new Pair<>(currentNode.x, currentNode.y));
 
-            // Explore neighbors
-            for (int[] direction : DIRECTIONS) {
-                int newX = current.x + direction[0];
-                int newY = current.y + direction[1];
+            // Get valid neighboring nodes (up, down, left, right)
+            for (Node neighbor : getNeighbors(currentNode)) {
+                if (closedList.contains(new Pair<>(neighbor.x, neighbor.y))) {
+                    continue;
+                }
 
-                if (isValidPosition(newX, newY)) {
-                    Node neighbor = grid[newX][newY];
+                double tentativeGCost = currentNode.gCost + 1; // Assume uniform cost of 1 per move
 
-                    if (closedList.contains(neighbor)) {
-                        continue;
-                    }
+                if (tentativeGCost < neighbor.gCost || !openList.contains(neighbor)) {
+                    neighbor.calculateCosts(targetNode, tentativeGCost);
+                    neighbor.parent = currentNode;
 
-                    double tentativeGCost = current.gCost + 1;  // Assuming each move has a cost of 1
-
-                    if (tentativeGCost < neighbor.gCost || !openList.contains(neighbor)) {
-                        neighbor.gCost = tentativeGCost;
-                        neighbor.hCost = heuristic(neighbor, targetNode);
-                        neighbor.fCost = neighbor.gCost + neighbor.hCost;
-                        neighbor.parent = current;
-
-                        if (!openList.contains(neighbor)) {
-                            openList.add(neighbor);
-                        }
+                    if (!openList.contains(neighbor)) {
+                        openList.add(neighbor);
                     }
                 }
             }
         }
 
-        // Return an empty path if no path is found
+        // Return an empty path if no valid path is found
         return new ArrayList<>();
     }
 
-    private boolean isValidPosition(int x, int y) {
-        return x >= 0 && y >= 0 && x < gridWidth && y < gridHeight;
-    }
-
-    // Manhattan distance heuristic (since no diagonal movement)
-    private double heuristic(Node a, Node b) {
-        return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
-    }
-
-    private List<Node> reconstructPath(Node current) {
-        List<Node> path = new ArrayList<>();
-        while (current != null) {
-            path.add(current);
-            current = current.parent;
+    private List<Pair<Integer, Integer>> reconstructPath(Node currentNode) {
+        List<Pair<Integer, Integer>> path = new ArrayList<>();
+        Node temp = currentNode;
+        while (temp != null) {
+            path.add(new Pair<>(temp.x * TILE_SIZE, temp.y * TILE_SIZE));
+            temp = temp.parent;
         }
         Collections.reverse(path);
         return path;
     }
 
+    private List<Node> getNeighbors(Node node) {
+        List<Node> neighbors = new ArrayList<>();
+
+        // Add neighbors (up, down, left, right)
+        if (node.x > 0)
+            neighbors.add(new Node(node.x - 1, node.y));
+        if (node.x < gridWidth / TILE_SIZE - 1)
+            neighbors.add(new Node(node.x + 1, node.y));
+        if (node.y > 0)
+            neighbors.add(new Node(node.x, node.y - 1));
+        if (node.y < gridHeight / TILE_SIZE - 1)
+            neighbors.add(new Node(node.x, node.y + 1));
+
+        return neighbors;
+    }
 
     public static class Node implements Comparable<Node> {
-        public int x, y;
-        public double gCost, hCost, fCost;
-        public Node parent;
+        int x, y;
+        double gCost; // Movement cost from start to this node
+        double hCost; // Heuristic cost from this node to target
+        double fCost; // Sum of gCost and hCost
+        Node parent;
 
-        public Node(int x, int y) {
+        Node(int x, int y) {
             this.x = x;
             this.y = y;
+        }
+
+        void calculateCosts(Node target, double gCostFromStart) {
+            this.gCost = gCostFromStart;
+            this.hCost = calculateHeuristic(target);
+            this.fCost = this.gCost + this.hCost;
+        }
+
+        private double calculateHeuristic(Node target) {
+            // Use Manhattan distance as heuristic
+            return Math.abs(target.x - this.x) + Math.abs(target.y - this.y);
         }
 
         @Override
         public int compareTo(@NotNull Node other) {
             return Double.compare(this.fCost, other.fCost);
         }
+
     }
 }
