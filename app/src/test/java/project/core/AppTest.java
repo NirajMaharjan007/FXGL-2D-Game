@@ -4,6 +4,9 @@
 package project.core;
 
 import com.almasb.fxgl.app.GameSettings;
+
+import javafx.util.Pair;
+
 import org.junit.jupiter.api.Test;
 import project.misc.ShortPathDetection;
 
@@ -15,13 +18,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class AppTest {
     @Test
     void shortPath() {
-        ShortPathDetection pathFinder = new ShortPathDetection(10, 10);
-        List<ShortPathDetection.Node> path = pathFinder.findPath(0, 0, 9, 9);
-
-        for (ShortPathDetection.Node node : path) {
-            System.out.println("Step: (" + node.x + ", " + node.y + ")");
-        }
+        ShortPathDetection pathFinder = new ShortPathDetection(32, 32);
+        List<Pair<Integer, Integer>> path = pathFinder.findPath(1, 1, 16, 16);
         assertNotNull(path);
+        for (Pair<Integer, Integer> pair : path) {
+            System.out.println(pair.getKey() + ": " + pair.getValue());
+        }
+
     }
 
     @Test
@@ -31,7 +34,7 @@ class AppTest {
         long startTime = System.currentTimeMillis();
         // Call the method you want to test
         App gameApp = new App();
-        gameApp.initSettings(settings);  // null for the sake of testing, normally you'd pass GameSettings
+        gameApp.initSettings(settings); // null for the sake of testing, normally you'd pass GameSettings
 
         // End time measurement
         long endTime = System.currentTimeMillis();
