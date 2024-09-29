@@ -4,19 +4,21 @@
 package project.core;
 
 import com.almasb.fxgl.app.*;
+import com.almasb.fxgl.dsl.components.FollowComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
+
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import project.entities.*;
-import project.misc.*;
 
 import java.util.Locale;
 
+import project.entities.*;
+import project.misc.*;
+
 import static com.almasb.fxgl.dsl.FXGL.*;
-import static project.entities.Vegetation.Rocks;
-import static project.entities.Vegetation.Trees;
+import static project.entities.Vegetation.*;
 
 public class App extends GameApplication {
     protected static final int WIDTH = 800, HEIGHT = 640;
@@ -39,7 +41,6 @@ public class App extends GameApplication {
     @Override
     protected void onPreInit() {
         super.onPreInit();
-
     }
 
     @Override
@@ -68,6 +69,8 @@ public class App extends GameApplication {
         player = getGameWorld().spawn("player", 128, 200).getComponent(Player.class);
 
         enemy = getGameWorld().spawn("enemy", 512, 200).getComponent(Enemy.class);
+        enemy.getEntity().addComponent(new FollowComponent(player.getEntity(), 128, 128, 255));
+
     }
 
     @Override
@@ -113,13 +116,12 @@ public class App extends GameApplication {
                 player.setHurt(false);
             }
         }, Duration.seconds(0.0000024f));
-        System.out.println("App.onUpdate()" + player.health);
-        CollisionDetection.follow(player, enemy, tpf);
+        // System.out.println("App.onUpdate()" + player.health);
 
         if (CollisionDetection.isTouch(player, enemy) && enemy.getAttack()) {
             if (!player.isHurt()) {
                 player.setHurt(true);
-                player.health -= 16;
+                player.health -= 2;
             } else if (player.isDead()) {
                 enemy.setAttack(false);
                 player.setHurt(false);

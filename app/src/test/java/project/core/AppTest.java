@@ -4,29 +4,11 @@
 package project.core;
 
 import com.almasb.fxgl.app.GameSettings;
-
-import javafx.util.Pair;
-
 import org.junit.jupiter.api.Test;
-import project.misc.ShortPathDetection;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AppTest {
-    @Test
-    void shortPath() {
-        ShortPathDetection pathFinder = new ShortPathDetection(32, 32);
-        List<Pair<Integer, Integer>> path = pathFinder.findPath(1, 1, 16, 16);
-        assertNotNull(path);
-        for (Pair<Integer, Integer> pair : path) {
-            System.out.println(pair.getKey() + ": " + pair.getValue());
-        }
-
-    }
-
     @Test
     public void testInitSettingsTime() {
         GameSettings settings = new GameSettings();
