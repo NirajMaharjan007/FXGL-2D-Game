@@ -157,32 +157,33 @@ public class Enemy extends Component {
 
     public void move(double x, double y) {
         physics.setAngularVelocity(0);
-        if (!physics.isMovingX())
-            left = right = false;
-        if (!physics.isMovingY())
-            up = down = false;
 
-        if (physics.isMovingX()) {
+        System.out.println("X: " + physics.isMovingX() + " Y: " + physics.isMovingY());
+
+        if (x != 0) {
             if (x < 0) {
                 left = true;
-                right = false;
+                right = up = down = false;
             } else if (x > 0) {
                 right = true;
-                left = false;
+                left = up = down = false;
             } else
-                right = left = false;
-        } else if (physics.isMovingY()) {
+                this.stop();
+
+            physics.setLinearVelocity(x, 0);
+        }
+        if (y != 0) {
             if (y > 0) {
                 down = true;
-                up = false;
+                up = right = left = false;
             } else if (y < 0) {
                 up = true;
-                down = false;
+                down = right = left = false;
             } else
-                up = down = false;
-        }
+                this.stop();
 
-        physics.setLinearVelocity(x, y);
+            physics.setLinearVelocity(0, y);
+        }
 
         // System.out.println(x + " " + y);
     }

@@ -53,20 +53,16 @@ public class CollisionDetection {
 
         // Move the follower towards the target at the specified speed
         if (distance > 35 && !enemy.isDead()) {
-            // double moveX = (deltaX / distance) * 2048 * tpf;
-            // double moveY = (deltaY / distance) * 2048 * tpf;
-
             if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                // Move in the X direction (horizontal)
-                if (deltaX != 0) {
-                    moveX = Math.signum(deltaX) * 4096 * tpf;
-                }
+                if (deltaX != 0)
+                    moveX = Math.signum(deltaX) * 8192 * tpf;
+
             } else {
-                if (deltaY != 0) {
-                    moveY = Math.signum(deltaY) * 4096 * tpf;
-                }
+                if (deltaY != 0)
+                    moveY = Math.signum(deltaY) * 8192 * tpf;
             }
             enemy.move(moveX, moveY);
+            System.out.println("CollisionDetection.follow():\n\tX: " + moveX + " Y: " + moveY);
         } else if (distance <= 35) {
             enemy.stop();
             enemy.setAttack(!enemy.isDead());
