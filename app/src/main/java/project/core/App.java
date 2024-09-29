@@ -4,7 +4,6 @@
 package project.core;
 
 import com.almasb.fxgl.app.*;
-import com.almasb.fxgl.dsl.components.FollowComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 
@@ -69,8 +68,6 @@ public class App extends GameApplication {
         player = getGameWorld().spawn("player", 128, 200).getComponent(Player.class);
 
         enemy = getGameWorld().spawn("enemy", 512, 200).getComponent(Enemy.class);
-        enemy.getEntity().addComponent(new FollowComponent(player.getEntity(), 128, 128, 255));
-
     }
 
     @Override
@@ -117,6 +114,8 @@ public class App extends GameApplication {
             }
         }, Duration.seconds(0.0000024f));
         // System.out.println("App.onUpdate()" + player.health);
+
+        CollisionDetection.follow(player, enemy, tpf);
 
         if (CollisionDetection.isTouch(player, enemy) && enemy.getAttack()) {
             if (!player.isHurt()) {
@@ -243,7 +242,7 @@ public class App extends GameApplication {
         getInput().addAction(new UserAction("Run") {
             @Override
             protected void onAction() {
-                System.out.println("App.onAction " + player.isRunning() + " " + count);
+                // System.out.println("App.onAction " + player.isRunning() + " " + count);
                 player.setRun(count <= 64);
                 count++;
             }

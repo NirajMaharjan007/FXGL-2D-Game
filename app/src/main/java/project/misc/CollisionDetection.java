@@ -1,5 +1,9 @@
 package project.misc;
 
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.entity.component.ComponentListener;
+
 import javafx.geometry.Rectangle2D;
 import project.entities.*;
 
@@ -67,5 +71,26 @@ public class CollisionDetection {
             enemy.stop();
             enemy.setAttack(!enemy.isDead());
         }
+    }
+
+    public static ComponentListener follow(Entity entity) {
+        ComponentListener listener = new ComponentListener() {
+            @Override
+            public void onAdded(Component component) {
+                Player player = component.getEntity().getComponent(Player.class);
+                while (!player.isDead()) {
+                    Enemy enemy = component.getEntity().getComponent(Enemy.class);
+                    follow(player, enemy, 1.0 / 60.0);
+                }
+
+                System.out.println("CollisionDetection.follow(...).new ComponentListener() {...}.onAdded()");
+            }
+
+            @Override
+            public void onRemoved(Component component) {
+            }
+
+        };
+        return listener;
     }
 }
