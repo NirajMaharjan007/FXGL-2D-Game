@@ -1,16 +1,14 @@
 package project.misc;
 
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.component.Component;
-import com.almasb.fxgl.entity.component.ComponentListener;
-
+import com.almasb.fxgl.entity.component.*;
 import javafx.geometry.Rectangle2D;
 import project.entities.*;
 
 public class CollisionDetection {
     public static boolean isTouch(Player player, Enemy enemy) {
         int size = 64;
-        Rectangle2D player_rect = new Rectangle2D(0, 0, 0, 0);
+        Rectangle2D player_rect = new Rectangle2D(0, 0, size, size);
         Rectangle2D enemy_rect = new Rectangle2D(enemy.getEntity().getX(), enemy.getEntity().getY(),
                 size, size);
 
@@ -30,7 +28,7 @@ public class CollisionDetection {
             player_rect = new Rectangle2D(player.getEntity().getX(), player.getEntity().getY() + size,
                     size, size);
 
-        return player_rect.intersects(enemy_rect);
+        return player_rect.intersects(enemy_rect) && !enemy.isDead();
     }
 
     public static void follow(Player player, Enemy enemy, double tpf) {
@@ -63,14 +61,16 @@ public class CollisionDetection {
             }
             enemy.move(moveX, moveY);
             System.out.println("CollisionDetection.follow():\n\tX: " + moveX + " Y: " + moveY);
-        } else if (distance <= 35) {
+        } else if (enemy.isDead()) {
             enemy.stop();
+        } else if (distance <= 35) {
             enemy.setAttack(!enemy.isDead());
+            enemy.stop();
         }
     }
 
     public static ComponentListener follow(Entity entity) {
-        ComponentListener listener = new ComponentListener() {
+        return new ComponentListener() {
             @Override
             public void onAdded(Component component) {
                 Player player = component.getEntity().getComponent(Player.class);
@@ -85,8 +85,6 @@ public class CollisionDetection {
             @Override
             public void onRemoved(Component component) {
             }
-
         };
-        return listener;
     }
 }

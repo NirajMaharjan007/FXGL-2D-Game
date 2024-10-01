@@ -13,11 +13,11 @@
             "scaleInDock": 1
         },
         "Level_1.tmx": {
-            "scale": 0.75,
-            "selectedLayer": 3,
+            "scale": 1.5,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 310,
-                "y": 541.3333333333333
+                "x": 159.66666666666669,
+                "y": 466
             }
         },
         "Level_1.tmx#Plant": {
@@ -27,7 +27,7 @@
             "scaleInDock": 0.5
         },
         "Level_1.tmx#grass": {
-            "scaleInDock": 1.5
+            "scaleInDock": 1
         },
         "Level_1.tmx#wall": {
             "scaleInDock": 1

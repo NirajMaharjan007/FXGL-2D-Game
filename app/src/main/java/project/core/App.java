@@ -6,26 +6,21 @@ package project.core;
 import com.almasb.fxgl.app.*;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
-
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-
-import java.util.Locale;
-
 import project.entities.*;
 import project.misc.*;
 
+import java.util.Locale;
+
 import static com.almasb.fxgl.dsl.FXGL.*;
-import static project.entities.Vegetation.*;
 
 public class App extends GameApplication {
     protected static final int WIDTH = 800, HEIGHT = 640;
     private static final String VERSION = "1.0.0dev", TITLE = "Orc Master";
     private Player player;
     private Enemy enemy;
-    private Trees tree;
-    private Rocks rocks;
 
     private int count = 0, attackCount = 0;
 
@@ -60,11 +55,7 @@ public class App extends GameApplication {
         getGameScene().setBackgroundColor(Color.BLACK);
 
         setLevelFromMap("tmx/Level_1.tmx");
-
-        rocks = getGameWorld().spawn("rocks", 300, 300).getComponent(Rocks.class);
-
-        tree = getGameWorld().spawn("trees", 200, 350).getComponent(Trees.class);
-
+        
         player = getGameWorld().spawn("player", 128, 200).getComponent(Player.class);
 
         enemy = getGameWorld().spawn("enemy", 512, 200).getComponent(Enemy.class);
@@ -74,32 +65,6 @@ public class App extends GameApplication {
     protected void onUpdate(double tpf) {
         super.onUpdate(tpf);
         getGameTimer().runAtInterval(() -> {
-            if (player.getEntity().getY() > tree.getEntity().getY() + tree.getEntity().getHeight()
-                    || player.getEntity().getY() > rocks.getEntity().getY()) {
-                // Player is below the tree, so move player in front of tree
-                player.getEntity().setZIndex(2);
-            } else {
-                // Player is above the tree, so move player behind the tree
-                if (player.getEntity().getX() <= tree.getEntity().getX() ||
-                        player.getEntity().getRightX() >= tree.getEntity().getRightX() ||
-                        player.getEntity().getX() <= rocks.getEntity().getX() ||
-                        player.getEntity().getRightX() >= rocks.getEntity().getRightX()) {
-                    player.getEntity().setZIndex(0);
-                }
-            }
-
-            // For enemy
-            if (enemy.getEntity().getY() > tree.getEntity().getY() + (tree.getEntity().getHeight())) {
-                // Player is below the tree, so move player in front of tree
-                enemy.getEntity().setZIndex(2);
-            } else {
-                // Player is above the tree, so move player behind the tree
-                if (enemy.getEntity().getX() <= tree.getEntity().getX() ||
-                        enemy.getEntity().getRightX() >= tree.getEntity().getRightX()) {
-                    enemy.getEntity().setZIndex(0);
-                }
-            }
-
             // For player and enemy
             if (enemy.getAttack()) {
                 enemy.getEntity().setZIndex(2);
@@ -111,6 +76,9 @@ public class App extends GameApplication {
             } else if (enemy.getAttack() && player.getAttack()) {
                 enemy.setHurt(false);
                 player.setHurt(false);
+            } else {
+                player.getEntity().setZIndex(0);
+                enemy.getEntity().setZIndex(0);
             }
         }, Duration.seconds(0.0000024f));
         // System.out.println("App.onUpdate()" + player.health);
