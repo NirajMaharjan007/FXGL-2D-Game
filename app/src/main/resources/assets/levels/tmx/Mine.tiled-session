@@ -10,26 +10,34 @@
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "": {
-            "scaleInDock": 1
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "Level_1.tmx": {
-            "scale": 1.5,
-            "selectedLayer": 4,
+            "scale": 1,
+            "selectedLayer": -1,
             "viewCenter": {
-                "x": 159.66666666666669,
-                "y": 466
+                "x": 423.5,
+                "y": 282
             }
         },
         "Level_1.tmx#Plant": {
             "scaleInDock": 1
         },
         "Level_1.tmx#StoneGround": {
+            "dynamicWrapping": false,
             "scaleInDock": 0.5
+        },
+        "Level_1.tmx#Trees": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "Level_1.tmx#grass": {
             "scaleInDock": 1
         },
         "Level_1.tmx#wall": {
+            "dynamicWrapping": false,
             "scaleInDock": 1
         },
         "Lvl1.tsx": {
@@ -60,7 +68,7 @@
             }
         }
     },
-    "last.imagePath": "/media/niraj007/files/Coding/gradle-test/javafx-2d-game/app/src/main/resources/assets/levels/tmx",
+    "last.imagePath": "E:/My Test/Gradle-Test/platformer-javafx/app/src/main/resources/assets/levels/tmx/vegetation/Trees_shadow",
     "map.height": 40,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
@@ -77,10 +85,11 @@
         "lvlone.tmx",
         "Lvl1.tsx"
     ],
-    "tileset.embedInMap": true,
+    "tileset.embedInMap": false,
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
         "height": 16,
         "width": 16
-    }
+    },
+    "tileset.type": 1
 }

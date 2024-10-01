@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="1">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="1">
  <tileset firstgid="1" name="grass" tilewidth="16" tileheight="16" tilecount="256" columns="16">
   <image source="Grass.png" width="256" height="256"/>
  </tileset>
@@ -8,6 +8,21 @@
  </tileset>
  <tileset firstgid="1281" name="StoneGround" tilewidth="16" tileheight="16" tilecount="256" columns="16">
   <image source="StoneGround.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="1537" name="Trees" tilewidth="64" tileheight="78" tilecount="4" columns="0">
+  <grid orientation="orthogonal" width="1" height="1"/>
+  <tile id="0">
+   <image source="vegetation/Trees_custom/Tree_resize_1.png" width="62" height="78"/>
+  </tile>
+  <tile id="1">
+   <image source="vegetation/Trees_texture_shadow/Tree2.png" width="64" height="64"/>
+  </tile>
+  <tile id="2">
+   <image source="vegetation/Trees_shadow/Tree3.png" width="64" height="64"/>
+  </tile>
+  <tile id="3">
+   <image source="vegetation/Trees_shadow/Fruit_tree3.png" width="64" height="64"/>
+  </tile>
  </tileset>
  <layer id="2" name="Tile Layer 1" width="50" height="40">
   <data encoding="csv">
