@@ -130,6 +130,8 @@ public class Player extends Component {
     public void onUpdate(double tpf) {
         super.onUpdate(tpf);
 
+        System.out.println("Player.onUpdate() " + health);
+
         if (physics.isMoving()) {
             if (run) {
                 if (left && texture.getAnimationChannel() != animRunLeft)

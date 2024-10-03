@@ -59,14 +59,15 @@ public class CollisionDetection {
                 if (deltaY != 0)
                     moveY = Math.signum(deltaY) * 8192 * tpf;
             }
-            enemy.move(moveX, moveY);
-            System.out.println("CollisionDetection.follow():\n\tX: " + moveX + " Y: " + moveY);
-        } else if (enemy.isDead()) {
-            enemy.stop();
+            if (!player.isDead())
+                enemy.move(moveX, moveY);
+            // System.out.println("CollisionDetection.follow():\n\tX: " + moveX + " Y: " +
+            // moveY);
         } else if (distance <= 35) {
-            enemy.setAttack(!enemy.isDead());
             enemy.stop();
+            enemy.setAttack(!enemy.isDead());
         }
+
     }
 
     public static ComponentListener follow(Entity entity) {

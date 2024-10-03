@@ -86,7 +86,7 @@ public class App extends GameApplication {
         if (CollisionDetection.isTouch(player, enemy) && enemy.getAttack()) {
             if (!player.isHurt()) {
                 player.setHurt(true);
-                player.health -= 2;
+                player.health -= 4;
             } else if (player.isDead()) {
                 enemy.setAttack(false);
                 player.setHurt(false);
@@ -105,6 +105,7 @@ public class App extends GameApplication {
             player.setDeath(true);
             player.health = 0;
         }
+
     }
 
     @Override
