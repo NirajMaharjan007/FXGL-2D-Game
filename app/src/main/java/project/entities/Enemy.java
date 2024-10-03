@@ -138,18 +138,22 @@ public class Enemy extends Component {
         }
     }
 
+    private void move() {
+        if (left && texture.getAnimationChannel() != animWalkLeft)
+            texture.loopAnimationChannel(animWalkLeft);
+        else if (right && texture.getAnimationChannel() != animWalkRight)
+            texture.loopAnimationChannel(animWalkRight);
+        else if (up && texture.getAnimationChannel() != animWalkUp)
+            texture.loopAnimationChannel(animWalkUp);
+        else if (down && texture.getAnimationChannel() != animWalkDown)
+            texture.loopAnimationChannel(animWalkDown);
+    }
+
     @Override
     public void onUpdate(double tpf) {
         super.onUpdate(tpf);
         if (physics.isMoving()) {
-            if (left && texture.getAnimationChannel() != animWalkLeft)
-                texture.loopAnimationChannel(animWalkLeft);
-            else if (right && texture.getAnimationChannel() != animWalkRight)
-                texture.loopAnimationChannel(animWalkRight);
-            else if (up && texture.getAnimationChannel() != animWalkUp)
-                texture.loopAnimationChannel(animWalkUp);
-            else if (down && texture.getAnimationChannel() != animWalkDown)
-                texture.loopAnimationChannel(animWalkDown);
+            this.move();
         } else {
             this.idle();
         }

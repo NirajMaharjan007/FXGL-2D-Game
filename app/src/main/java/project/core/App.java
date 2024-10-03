@@ -55,7 +55,7 @@ public class App extends GameApplication {
         getGameScene().setBackgroundColor(Color.BLACK);
 
         setLevelFromMap("tmx/Level_1.tmx");
-        
+
         player = getGameWorld().spawn("player", 128, 200).getComponent(Player.class);
 
         enemy = getGameWorld().spawn("enemy", 512, 200).getComponent(Enemy.class);
@@ -64,6 +64,7 @@ public class App extends GameApplication {
     @Override
     protected void onUpdate(double tpf) {
         super.onUpdate(tpf);
+
         getGameTimer().runAtInterval(() -> {
             // For player and enemy
             if (enemy.getAttack()) {
@@ -76,9 +77,6 @@ public class App extends GameApplication {
             } else if (enemy.getAttack() && player.getAttack()) {
                 enemy.setHurt(false);
                 player.setHurt(false);
-            } else {
-                player.getEntity().setZIndex(0);
-                enemy.getEntity().setZIndex(0);
             }
         }, Duration.seconds(0.0000024f));
         // System.out.println("App.onUpdate()" + player.health);
