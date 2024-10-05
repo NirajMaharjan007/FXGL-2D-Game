@@ -217,10 +217,10 @@ public class Enemy extends Component {
     }
 
     public boolean isDead() {
-        return death;
+        return !death;
     }
 
     public void setDead(boolean b) {
-        death = true;
+        death = b;
     }
 }
