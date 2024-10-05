@@ -9,8 +9,6 @@ import javafx.util.Duration;
 
 public class Player extends Component {
     public static final int width = 64, height = 64, speed = 128;
-    public double health = 50;
-
     private final AnimatedTexture texture;
     // idle
     private final AnimationChannel animIdleUp, animIdleLeft, animIdleRight, animIdleDown;
@@ -26,6 +24,7 @@ public class Player extends Component {
     private final AnimationChannel animHurtUp, animHurtDown, animHurtLeft, animHurtRight;
     // death
     private final AnimationChannel animDeathUp, animDeathDown, animDeathLeft, animDeathRight;
+    public double health = 50;
     public boolean up = true, down = false, left = false, right = false;
 
     private PhysicsComponent physics;
