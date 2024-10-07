@@ -1,5 +1,7 @@
 package project.misc;
 
+import static com.almasb.fxgl.dsl.FXGL.getWorldProperties;
+
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.*;
 import javafx.geometry.Rectangle2D;
@@ -53,16 +55,15 @@ public class CollisionDetection {
         if (distance > 35 && !enemy.isDead()) {
             if (Math.abs(deltaX) > Math.abs(deltaY)) {
                 if (deltaX != 0)
-                    moveX = Math.signum(deltaX) * 8192 * tpf;
+                    moveX = Math.signum(deltaX) * 4096 * tpf;
 
             } else {
                 if (deltaY != 0)
-                    moveY = Math.signum(deltaY) * 8192 * tpf;
+                    moveY = Math.signum(deltaY) * 4096 * tpf;
             }
             if (!player.isDead())
                 enemy.move(moveX, moveY);
-            // System.out.println("CollisionDetection.follow():\n\tX: " + moveX + " Y: " +
-            // moveY);
+            System.out.println("CollisionDetection.follow():\n\tX: " + moveX + " Y: " + moveY);
         } else if (distance <= 35) {
             enemy.stop();
             enemy.setAttack(!enemy.isDead());
@@ -77,7 +78,7 @@ public class CollisionDetection {
                 Player player = component.getEntity().getComponent(Player.class);
                 while (!player.isDead()) {
                     Enemy enemy = component.getEntity().getComponent(Enemy.class);
-                    follow(player, enemy, 1.0 / 60.0);
+                    follow(player, enemy, getWorldProperties().getDouble("player"));
                 }
 
                 System.out.println("CollisionDetection.follow(...).new ComponentListener() {...}.onAdded()");

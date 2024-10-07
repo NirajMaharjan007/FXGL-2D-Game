@@ -25,7 +25,7 @@ public class Factory implements EntityFactory {
         return entityBuilder(data)
                 .type(EntityType.PLAYER)
                 .with(physics)
-                .bbox(new HitBox(BoundingShape.circle(12)))
+                .bbox(new HitBox(BoundingShape.circle(16)))
                 .collidable()
                 .with(new Player())
                 .buildAndAttach();
@@ -53,6 +53,4 @@ public class Factory implements EntityFactory {
                 .with(new Enemy())
                 .buildAndAttach();
     }
-
-
 }
