@@ -1,13 +1,11 @@
 package project.core;
 
-import static com.almasb.fxgl.dsl.FXGL.animationBuilder;
-import static com.almasb.fxgl.dsl.FXGL.getUIFactoryService;
-
 import com.almasb.fxgl.ui.UIController;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
+
+import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class MainUI implements UIController {
     @FXML
@@ -15,6 +13,10 @@ public class MainUI implements UIController {
 
     @FXML
     private Label counter;
+
+    protected MainUI() {
+
+    }
 
     public Label getCounter() {
         return counter;
@@ -24,13 +26,9 @@ public class MainUI implements UIController {
         return label;
     }
 
-    protected MainUI() {
-
-    }
-
     @Override
     public void init() {
-        counter.setFont(getUIFactoryService().newFont(24));
+        counter.setFont(getUIFactoryService().newFont(20));
         label.setFont(getUIFactoryService().newFont(16));
 
         counter.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -40,7 +38,7 @@ public class MainUI implements UIController {
 
     private void animateLabel(Label label) {
         animationBuilder()
-                .duration(Duration.seconds(0.322))
+                .duration(Duration.seconds(0.32))
                 .fadeIn(label)
                 .buildAndPlay();
     }

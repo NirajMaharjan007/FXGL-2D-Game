@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
-
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
-<AnchorPane minWidth="800" minHeight="600" xmlns="http://javafx.com/javafx/8.0.60"
-      xmlns:fx="http://javafx.com/fxml/1">
-     <Label translateX="100" translateY="100" fx:id="label" textFill="azure" />
-     <Label translateX="150" translateY="100" fx:id="counter" textFill="azure" />
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+
+<AnchorPane minHeight="640.0" minWidth="800" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+   <FlowPane alignment="CENTER_LEFT" columnHalignment="CENTER" focusTraversable="true" hgap="10.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="28.0" prefWidth="191.0">
+      <children>
+           <Label fx:id="label" text="Health" textFill="AZURE" />
+           <Label fx:id="counter" text="0" textFill="AZURE" />
+      </children>
+      <padding>
+         <Insets bottom="10.0" left="16.0" right="16.0" top="10.0" />
+      </padding>
+   </FlowPane>
+   <cursor>
+      <Cursor fx:constant="DEFAULT" />
+   </cursor>
 </AnchorPane>

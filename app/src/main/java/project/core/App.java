@@ -3,25 +3,25 @@
  */
 package project.core;
 
-import static com.almasb.fxgl.dsl.FXGL.*;
-import static java.lang.System.*;
-
 import com.almasb.fxgl.app.*;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.ui.UI;
-
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import project.entities.*;
 import project.misc.*;
 
-import java.util.*;
+import java.util.Locale;
+
+import static com.almasb.fxgl.dsl.FXGL.*;
+import static java.lang.System.*;
 
 public class App extends GameApplication {
     protected static final int WIDTH = 800, HEIGHT = 640;
     private static final String VERSION = "1.0.0dev", TITLE = "Orc Master";
+    protected MainUI controller;
     private Player player;
     private Enemy enemy;
 
@@ -31,14 +31,15 @@ public class App extends GameApplication {
         try {
             launch(args);
         } catch (Exception e) {
+            err.println(e.getMessage());
             embeddedShutdown();
         }
     }
 
     /*
-     * 
+     *
      * Just for printing output the User Details
-     * 
+     *
      */
     @Override
     protected void onPreInit() {
@@ -60,20 +61,14 @@ public class App extends GameApplication {
     }
 
     @Override
-    protected void initGameVars(Map<String, Object> vars) {
-        vars.put("counter", 50);
-        vars.put("label", 0);
-    }
-
-    @Override
     protected void initUI() {
         super.initUI();
 
-        MainUI controller = new MainUI();
+        controller = new MainUI();
         UI ui = getAssetLoader().loadUI("main.fxml", controller);
 
-        controller.getCounter().textProperty().bind(getip("counter").asString());
-        controller.getLabel().textProperty().bind(getip("label").asString());
+        controller.getLabel().textProperty().set("Player health:");
+        controller.getCounter().textProperty().set(player.health + "");
 
         getGameScene().addUI(ui);
     }
@@ -87,6 +82,7 @@ public class App extends GameApplication {
 
         player = getGameWorld().spawn("player", 128, 200).getComponent(Player.class);
 
+
         enemy = getGameWorld().spawn("enemy", 512, 200).getComponent(Enemy.class);
     }
 
@@ -95,6 +91,8 @@ public class App extends GameApplication {
         super.onUpdate(tpf);
 
         getGameTimer().runAtInterval(() -> {
+            controller.getCounter().setText("" + player.health);
+
             // For player and enemy
             if (enemy.getAttack()) {
                 enemy.getEntity().setZIndex(2);
