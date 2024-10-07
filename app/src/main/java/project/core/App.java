@@ -3,18 +3,21 @@
  */
 package project.core;
 
+import static com.almasb.fxgl.dsl.FXGL.*;
+import static java.lang.System.*;
+
 import com.almasb.fxgl.app.*;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.ui.UI;
+
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import project.entities.*;
 import project.misc.*;
 
-import java.util.Locale;
-
-import static com.almasb.fxgl.dsl.FXGL.*;
+import java.util.*;
 
 public class App extends GameApplication {
     protected static final int WIDTH = 800, HEIGHT = 640;
@@ -32,9 +35,19 @@ public class App extends GameApplication {
         }
     }
 
+    /*
+     * 
+     * Just for printing output the User Details
+     * 
+     */
     @Override
     protected void onPreInit() {
         super.onPreInit();
+
+        out.println("App.onPreInit()");
+        out.println("JAVA Version: " + getProperty("java.version"));
+        out.println("OS Name: " + getProperty("os.name").toUpperCase(Locale.ENGLISH));
+        out.println("Game Version: " + VERSION);
     }
 
     @Override
@@ -44,9 +57,25 @@ public class App extends GameApplication {
         settings.setHeight(HEIGHT);
         settings.setTitle(TITLE);
         settings.setVersion(VERSION);
+    }
 
-        System.out.println("OS Name: " + System.getProperty("os.name").toUpperCase(Locale.ENGLISH));
-        System.out.println("Game Version: " + VERSION);
+    @Override
+    protected void initGameVars(Map<String, Object> vars) {
+        vars.put("counter", 50);
+        vars.put("label", 0);
+    }
+
+    @Override
+    protected void initUI() {
+        super.initUI();
+
+        MainUI controller = new MainUI();
+        UI ui = getAssetLoader().loadUI("main.fxml", controller);
+
+        controller.getCounter().textProperty().bind(getip("counter").asString());
+        controller.getLabel().textProperty().bind(getip("label").asString());
+
+        getGameScene().addUI(ui);
     }
 
     @Override
@@ -79,7 +108,7 @@ public class App extends GameApplication {
                 player.setHurt(false);
             }
         }, Duration.seconds(0.0000024f));
-        // System.out.println("App.onUpdate()" + player.health);
+        // out.println("App.onUpdate()" + player.health);
 
         CollisionDetection.follow(player, enemy, tpf);
 
@@ -189,7 +218,7 @@ public class App extends GameApplication {
             protected void onActionBegin() {
                 player.setAttack(true);
 
-                System.out.println("Enemy Hurt " + enemy.isHurt() +
+                out.println("Enemy Hurt " + enemy.isHurt() +
                         " Player Attack " + player.getAttack() +
                         " Status: " + CollisionDetection.isTouch(player, enemy));
 
@@ -209,7 +238,7 @@ public class App extends GameApplication {
         getInput().addAction(new UserAction("Run") {
             @Override
             protected void onAction() {
-                // System.out.println("App.onAction " + player.isRunning() + " " + count);
+                // out.println("App.onAction " + player.isRunning() + " " + count);
                 player.setRun(count <= 64);
                 count++;
             }
@@ -227,13 +256,13 @@ public class App extends GameApplication {
         getInput().addAction(new UserAction("Debug Option") {
             @Override
             protected void onActionBegin() {
-                System.out.println("App.onAction");
-                System.out.println("--------------------------------------------------------");
-                System.out.println("Player pos: " + player.getEntity().getPosition());
-                System.out.println("Enemy pos: " + enemy.getEntity().getPosition());
-                System.out.println("Player Actions " + player.getAction());
-                System.out.println(player.getSpeed());
-                System.out.println("--------------------------------------------------------");
+                out.println("App.onAction");
+                out.println("--------------------------------------------------------");
+                out.println("Player pos: " + player.getEntity().getPosition());
+                out.println("Enemy pos: " + enemy.getEntity().getPosition());
+                out.println("Player Actions " + player.getAction());
+                out.println(player.getSpeed());
+                out.println("--------------------------------------------------------");
             }
 
             @Override
