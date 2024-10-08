@@ -163,7 +163,8 @@ public class Enemy extends Component {
     public void move(double x, double y) {
         physics.setAngularVelocity(0);
 
-        System.out.println("X: " + physics.isMovingX() + " Y: " + physics.isMovingY());
+        // System.out.println("X: " + physics.isMovingX() + " Y: " +
+        // physics.isMovingY());
 
         if (x != 0) {
             if (x < 0) {

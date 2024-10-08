@@ -14,6 +14,14 @@ public class MainUI implements UIController {
     protected MainUI() {
     }
 
+    public Label getCounter1() {
+        return counter1;
+    }
+
+    public Label getLabel1() {
+        return label1;
+    }
+
     public Label getCounter() {
         return counter;
     }
@@ -27,8 +35,15 @@ public class MainUI implements UIController {
         counter.setFont(getUIFactoryService().newFont(20));
         label.setFont(getUIFactoryService().newFont(16));
 
+        counter1.setFont(getUIFactoryService().newFont(20));
+        label1.setFont(getUIFactoryService().newFont(16));
+
         counter.textProperty().addListener((observable, oldValue, newValue) -> {
             animateLabel(counter);
+        });
+
+        counter1.textProperty().addListener((observable, oldValue, newValue) -> {
+            animateLabel(counter1);
         });
 
     }

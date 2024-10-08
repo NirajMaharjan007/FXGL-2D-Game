@@ -30,8 +30,7 @@ public class CollisionDetection {
             player_rect = new Rectangle2D(player.getEntity().getX(), player.getEntity().getY() + size,
                     size, size);
 
-        boolean flag = !enemy.isDead() || !player.isDead();
-        return player_rect.intersects(enemy_rect) && flag;
+        return player_rect.intersects(enemy_rect) && !enemy.isDead();
     }
 
     public static void follow(Player player, Enemy enemy, double tpf) {

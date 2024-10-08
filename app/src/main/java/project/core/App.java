@@ -70,6 +70,8 @@ public class App extends GameApplication {
 
         controller.getLabel().textProperty().set("Player health:");
         controller.getCounter().textProperty().set(player.health + "");
+        controller.getLabel1().textProperty().set("Enemy health:");
+        controller.getCounter1().textProperty().set(enemy.health + "");
 
         getGameScene().addUI(ui);
     }
@@ -92,6 +94,7 @@ public class App extends GameApplication {
 
         getGameTimer().runAtInterval(() -> {
             controller.getCounter().setText("" + player.health);
+            controller.getCounter1().setText("" + enemy.health);
 
             // For player and enemy
             if (enemy.getAttack()) {
@@ -113,7 +116,7 @@ public class App extends GameApplication {
         if (CollisionDetection.isTouch(player, enemy) && enemy.getAttack()) {
             if (!player.isHurt()) {
                 player.setHurt(true);
-                player.health -= 4;
+                player.health -= 8;
             } else if (player.isDead()) {
                 enemy.setAttack(false);
                 player.setHurt(false);
@@ -123,10 +126,10 @@ public class App extends GameApplication {
             enemy.setAttack(false);
         }
 
-        if (enemy.isHurt())
-            enemy.health -= 2;
-        if (enemy.health <= 0)
+        if (enemy.health <= 0) {
+            enemy.health = 0;
             enemy.setDead(true);
+        }
 
         if (player.health <= 0) {
             player.health = 0;
@@ -219,12 +222,14 @@ public class App extends GameApplication {
             protected void onActionBegin() {
                 player.setAttack(true);
 
-                out.println("Enemy Hurt " + enemy.isHurt() +
-                        " Player Attack " + player.getAttack() +
-                        " Status: " + CollisionDetection.isTouch(player, enemy));
+                // out.println("Enemy Hurt " + enemy.isHurt() +
+                // " Player Attack " + player.getAttack() +
+                // " Status: " + CollisionDetection.isTouch(player, enemy));
 
-                if (player.getAttack() && CollisionDetection.isTouch(player, enemy))
+                if (player.getAttack() && CollisionDetection.isTouch(player, enemy)) {
                     enemy.setHurt(true);
+                    enemy.health -= 2;
+                }
 
                 else if (enemy.isHurt())
                     player.setAttack(false);
