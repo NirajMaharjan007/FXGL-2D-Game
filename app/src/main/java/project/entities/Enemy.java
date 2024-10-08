@@ -23,6 +23,7 @@ public class Enemy extends Component {
     // Death
     private final AnimationChannel animDeathUp, animDeathLeft, animDeathRight, animDeathDown;
 
+    public double health = 60;
     public boolean up, down, left, right;
     private boolean attack = false, hurt = false, death = false;
     private PhysicsComponent physics;

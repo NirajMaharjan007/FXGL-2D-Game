@@ -9,13 +9,9 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class MainUI implements UIController {
     @FXML
-    private Label label;
-
-    @FXML
-    private Label counter;
+    private Label label, counter, label1, counter1;
 
     protected MainUI() {
-
     }
 
     public Label getCounter() {
@@ -34,6 +30,7 @@ public class MainUI implements UIController {
         counter.textProperty().addListener((observable, oldValue, newValue) -> {
             animateLabel(counter);
         });
+
     }
 
     private void animateLabel(Label label) {

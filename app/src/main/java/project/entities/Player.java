@@ -129,8 +129,6 @@ public class Player extends Component {
     public void onUpdate(double tpf) {
         super.onUpdate(tpf);
 
-        System.out.println("Player.onUpdate() " + health);
-
         if (physics.isMoving()) {
             if (run) {
                 if (left && texture.getAnimationChannel() != animRunLeft)
@@ -179,6 +177,15 @@ public class Player extends Component {
                 texture.loopAnimationChannel(animAttackUp);
             else if (down && texture.getAnimationChannel() != animAttackDown)
                 texture.loopAnimationChannel(animAttackDown);
+        } else if (death || health < 1.00) {
+            if (left && texture.getAnimationChannel() != animDeathLeft)
+                texture.playAnimationChannel(animDeathLeft);
+            else if (right && texture.getAnimationChannel() != animDeathRight)
+                texture.playAnimationChannel(animDeathRight);
+            else if (up && texture.getAnimationChannel() != animDeathUp)
+                texture.playAnimationChannel(animDeathUp);
+            else if (down && texture.getAnimationChannel() != animDeathDown)
+                texture.playAnimationChannel(animDeathDown);
         } else if (hurt) {
             texture.setOnCycleFinished(() -> hurt = false);
             if (left && texture.getAnimationChannel() != animHurtLeft)
@@ -189,15 +196,6 @@ public class Player extends Component {
                 texture.loopAnimationChannel(animHurtUp);
             else if (down && texture.getAnimationChannel() != animHurtDown)
                 texture.loopAnimationChannel(animHurtDown);
-        } else if (death && !hurt) {
-            if (left && texture.getAnimationChannel() != animDeathLeft)
-                texture.playAnimationChannel(animDeathLeft);
-            else if (right && texture.getAnimationChannel() != animDeathRight)
-                texture.playAnimationChannel(animDeathRight);
-            else if (up && texture.getAnimationChannel() != animDeathUp)
-                texture.playAnimationChannel(animDeathUp);
-            else if (down && texture.getAnimationChannel() != animDeathDown)
-                texture.playAnimationChannel(animDeathDown);
         } else {
             if (left && texture.getAnimationChannel() != animIdleLeft)
                 texture.loopAnimationChannel(animIdleLeft);

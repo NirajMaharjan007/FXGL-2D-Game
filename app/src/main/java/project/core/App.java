@@ -5,6 +5,7 @@ package project.core;
 
 import com.almasb.fxgl.app.*;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.ui.UI;
 import javafx.scene.input.KeyCode;
@@ -20,12 +21,12 @@ import static java.lang.System.*;
 
 public class App extends GameApplication {
     protected static final int WIDTH = 800, HEIGHT = 640;
-    private static final String VERSION = "1.0.0dev", TITLE = "Orc Master";
+    private static final String VERSION = "1.0.2dev", TITLE = "Orc Master";
     protected MainUI controller;
     private Player player;
     private Enemy enemy;
 
-    private int count = 0, attackCount = 0;
+    private int count = 0;
 
     public static void main(String[] args) {
         try {
@@ -82,7 +83,6 @@ public class App extends GameApplication {
 
         player = getGameWorld().spawn("player", 128, 200).getComponent(Player.class);
 
-
         enemy = getGameWorld().spawn("enemy", 512, 200).getComponent(Enemy.class);
     }
 
@@ -124,13 +124,13 @@ public class App extends GameApplication {
         }
 
         if (enemy.isHurt())
-            attackCount++;
-        if (attackCount >= 512)
+            enemy.health -= 2;
+        if (enemy.health <= 0)
             enemy.setDead(true);
 
         if (player.health <= 0) {
-            player.setDeath(true);
             player.health = 0;
+            player.setDeath(true);
         }
 
     }
@@ -138,7 +138,10 @@ public class App extends GameApplication {
     @Override
     protected void initInput() {
         super.initInput();
-        getInput().addAction(new UserAction("Up") {
+
+        Input input = getInput();
+
+        input.addAction(new UserAction("Up") {
             @Override
             protected void onActionBegin() {
                 player.setAttack(false);
@@ -155,7 +158,7 @@ public class App extends GameApplication {
             }
         }, KeyCode.UP);
 
-        getInput().addAction(new UserAction("Down") {
+        input.addAction(new UserAction("Down") {
             @Override
             protected void onActionBegin() {
                 player.setAttack(false);
@@ -174,7 +177,7 @@ public class App extends GameApplication {
             }
         }, KeyCode.DOWN);
 
-        getInput().addAction(new UserAction("Left") {
+        input.addAction(new UserAction("Left") {
             @Override
             protected void onActionBegin() {
                 player.setAttack(false);
@@ -193,7 +196,7 @@ public class App extends GameApplication {
             }
         }, KeyCode.LEFT);
 
-        getInput().addAction(new UserAction("Right") {
+        input.addAction(new UserAction("Right") {
             @Override
             protected void onActionBegin() {
                 player.setAttack(false);
@@ -211,7 +214,7 @@ public class App extends GameApplication {
             }
         }, KeyCode.RIGHT);
 
-        getInput().addAction(new UserAction("Attack") {
+        input.addAction(new UserAction("Attack") {
             @Override
             protected void onActionBegin() {
                 player.setAttack(true);
@@ -233,7 +236,7 @@ public class App extends GameApplication {
             }
         }, KeyCode.SPACE);
 
-        getInput().addAction(new UserAction("Run") {
+        input.addAction(new UserAction("Run") {
             @Override
             protected void onAction() {
                 // out.println("App.onAction " + player.isRunning() + " " + count);
@@ -251,7 +254,7 @@ public class App extends GameApplication {
             }
         }, KeyCode.X);
 
-        getInput().addAction(new UserAction("Debug Option") {
+        input.addAction(new UserAction("Debug Option") {
             @Override
             protected void onActionBegin() {
                 out.println("App.onAction");
@@ -265,7 +268,6 @@ public class App extends GameApplication {
 
             @Override
             protected void onActionEnd() {
-                attackCount = 0;
             }
 
         }, KeyCode.Z);
