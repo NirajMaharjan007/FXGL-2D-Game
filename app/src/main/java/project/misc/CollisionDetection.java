@@ -63,7 +63,6 @@ public class CollisionDetection {
             }
             if (!player.isDead())
                 enemy.move(moveX, moveY);
-            System.out.println("CollisionDetection.follow():\n\tX: " + moveX + " Y: " + moveY);
         } else if (distance <= 35) {
             enemy.stop();
             enemy.setAttack(!enemy.isDead());
